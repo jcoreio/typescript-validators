@@ -1,7 +1,7 @@
 {
-  "name": "typescript-library-skeleton",
+  "name": "@jcoreio/typescript-validators",
   "version": "0.0.0-development",
-  "description": "my personal ES2015 library project skeleton",
+  "description": "API input validators with user-friendly error output and TypeScript to ensure you don't miss any properties",
   "main": "index.js",
   "sideEffects": false,
   "scripts": {
@@ -69,17 +69,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/jedwards1211/typescript-library-skeleton.git"
+    "url": "https://github.com/jcoreio/typescript-validators.git"
   },
   "keywords": [
-    "typescript"
+    "typescript",
+    "validation",
+    "validator",
+    "api",
+    "assertion",
+    "assert",
+    "validate"
   ],
   "author": "Andy Edwards",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jedwards1211/typescript-library-skeleton/issues"
+    "url": "https://github.com/jcoreio/typescript-validators/issues"
   },
-  "homepage": "https://github.com/jedwards1211/typescript-library-skeleton#readme",
+  "homepage": "https://github.com/jcoreio/typescript-validators#readme",
   "devDependencies": {
     "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.6",
@@ -122,7 +128,8 @@
     "typescript": "^3.7.2"
   },
   "dependencies": {
-    "@babel/runtime": "^7.1.5"
+    "@babel/runtime": "^7.1.5",
+    "typelevel-ts": "^0.4.0"
   },
   "renovate": {
     "extends": [
