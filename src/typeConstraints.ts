@@ -1,4 +1,4 @@
-import { Type } from './types'
+import Type from './types/Type'
 
 import Validation, { ErrorTuple, IdentifierPath } from './Validation'
 import { TypeConstraint } from './types/ConstrainedType'

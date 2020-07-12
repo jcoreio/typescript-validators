@@ -17,6 +17,7 @@ const errorMessages = {
   ERR_EXPECT_INSTANCEOF: 'must be an instance of $0',
   ERR_EXPECT_KEY_TYPE: 'keys must be: $0',
   ERR_EXPECT_NULL: 'must be null',
+  ERR_EXPECT_UNDEFINED: 'must be undefined',
   ERR_EXPECT_NUMBER: 'must be a number',
   ERR_EXPECT_OBJECT: 'must be an object',
   ERR_EXPECT_PROMISE: 'must be a promise of $0',

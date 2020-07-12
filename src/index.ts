@@ -5,8 +5,8 @@ import BooleanLiteralType from './types/BooleanLiteralType'
 import BooleanType from './types/BooleanType'
 import ConstrainedType from './types/ConstrainedType'
 import IntersectionType from './types/IntersectionType'
-import NullableType from './types/NullableType'
 import NullLiteralType from './types/NullLiteralType'
+import UndefinedLiteralType from './types/UndefinedLiteralType'
 import NumberType from './types/NumberType'
 import NumericLiteralType from './types/NumericLiteralType'
 import ObjectType from './types/ObjectType'
@@ -30,8 +30,8 @@ export {
   BooleanType,
   ConstrainedType,
   IntersectionType,
-  NullableType,
   NullLiteralType,
+  UndefinedLiteralType,
   NumberType,
   NumericLiteralType,
   ObjectType,
@@ -54,9 +54,13 @@ export const array = <T>(elementType: Type<T>): Type<T[]> =>
 export const booleanLiteral = <T extends true | false>(value: T): Type<T> =>
   new BooleanLiteralType(value)
 export const boolean = (): Type<boolean> => new BooleanType()
-export const nullable = <T>(type: Type<T>): Type<T | null | undefined> =>
-  new NullableType(type)
 export const nullLiteral = (): Type<null> => new NullLiteralType()
+export const undefinedLiteral = (): Type<undefined> =>
+  new UndefinedLiteralType()
+export const nullable = <T>(type: Type<T>): Type<T | null | undefined> =>
+  union(type, nullLiteral(), undefinedLiteral())
+export const nullOr = <T>(type: Type<T>): Type<T | null> =>
+  union(type, nullLiteral())
 export const number = (): Type<number> => new NumberType()
 export const numericLiteral = <T extends number>(value: T): Type<T> =>
   new NumericLiteralType(value)
@@ -67,19 +71,78 @@ export const symbol = (): Type<symbol> => new SymbolType()
 export const symbolLiteral = <T extends symbol>(value: T): Type<T> =>
   new SymbolLiteralType(value)
 
-export function object<S extends {}>(
-  properties: { [K in keyof S]-?: Type<S[K]> }
+type OptionalProperty<T> = { __optional__: Type<T> }
+
+export const optional = <T>(type: Type<T>): OptionalProperty<T> => ({
+  __optional__: type,
+})
+
+const getOptional = <T>(value: unknown): Type<T> | null | undefined =>
+  value instanceof Object ? (value as any).__optional__ : null
+
+export const optionalNullable = <T>(
+  type: Type<T>
+): OptionalProperty<T | null> => optional(union(type, nullLiteral()))
+
+type OptionalKeys<T> = {
+  [K in keyof T]: T extends Record<K, T[K]> ? never : K
+} extends {
+  [_ in keyof T]: infer U
+}
+  ? {} extends U
+    ? never
+    : U
+  : never
+
+export function object2<S extends {}>(
+  properties: {
+    [K in keyof S]-?: K extends OptionalKeys<S>
+      ? OptionalProperty<S[K]>
+      : Type<S[K]>
+  }
 ): ObjectType<S> {
   return new ObjectType(
-    Object.keys(properties).map(
-      key =>
+    [...Object.entries(properties)].map(
+      ([key, type]) =>
         new ObjectTypeProperty(
           key,
-          (properties as any)[key],
-          (properties as any)[key] instanceof NullableType
+          getOptional(type) || (type as Type<any>),
+          Boolean(getOptional(type))
         )
     )
   ) as any
+}
+
+type Properties = Record<string | number | symbol, Type<any>>
+
+export function object<Required extends Properties>(
+  required: Required
+): ObjectType<{ [K in keyof Required]: Required[K]['__type'] }>
+export function object<
+  Required extends Properties,
+  Optional extends Properties
+>(
+  required: Required,
+  optional: Optional
+): ObjectType<
+  { [K in keyof Required]: Required[K]['__type'] } &
+    { [K in keyof Optional]?: Optional[K]['__type'] }
+>
+export function object<
+  Required extends Properties,
+  Optional extends Properties
+>(
+  required: Required | null | undefined,
+  optional: Optional | null | undefined = null
+): ObjectType<any> {
+  return new ObjectType([
+    ...[...Object.entries(required || [])].map(
+      ([key, type]) => new ObjectTypeProperty(key, type as Type<any>, false)
+    ),
+    ...[...Object.entries(optional || [])].map(
+      ([key, type]) => new ObjectTypeProperty(key, type as Type<any>, true)
+    ),
+  ]) as any
 }
 
 export const record = <K extends string | number | symbol, V>(
@@ -178,3 +241,5 @@ export function union(...types: Type<any>[]): Type<any> {
 
 export const constrain = <T>(name: string, type: Type<T>): ConstrainedType<T> =>
   new ConstrainedType(name, type)
+
+export type ExtractType<T extends Type<any>> = T['__type']

@@ -1,4 +1,5 @@
-import { AnyType, Type } from './types'
+import Type from './types/Type'
+import AnyType from './types/AnyType'
 
 /**
  * Given two types, A and B, compare them and return either -1, 0, or 1:
