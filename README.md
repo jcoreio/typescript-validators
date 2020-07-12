@@ -316,3 +316,35 @@ Logs a warning to the console if `input` isn't the correct type.
 ### `toString(): string`
 
 Returns a string representation of this type (using TS type syntax in most cases).
+
+## `t.ExtractType<T extends Type<any>>`
+
+Gets the TypeScript type that a validator type accepts. For example:
+
+```ts
+import * as t from 'typescript-validators'
+
+const PostValidator = t.simpleObject({
+  author: t.simpleObject({
+    name: t.string(),
+    username: t.string(),
+  }),
+  content: t.string(),
+  tags: t.array(t.string()),
+})
+
+type Post = t.ExtractType<typeof PostValidator>
+```
+
+Hover over `Post` in the IDE and you'll see, voilà:
+
+```ts
+type Post = {
+  author: {
+    name: string
+    username: string
+  }
+  content: string
+  tags: string[]
+}
+```
