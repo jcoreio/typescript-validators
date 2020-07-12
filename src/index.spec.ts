@@ -369,7 +369,7 @@ describe(`smoke test`, function() {
         SecretKey: '22222222222222',
       },
       LiveChat: {
-        License: '10730772',
+        License: '222222222',
       },
       NotificationsApi: {
         Url: 'https://notifications-api.foo.com',

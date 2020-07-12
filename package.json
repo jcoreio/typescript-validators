@@ -72,13 +72,23 @@
     "url": "https://github.com/jcoreio/typescript-validators.git"
   },
   "keywords": [
-    "typescript",
-    "validation",
-    "validator",
     "api",
     "assertion",
     "assert",
-    "validate"
+    "defensive-programming",
+    "json",
+    "json-schema",
+    "js-schema",
+    "object-schema",
+    "runtime-types",
+    "schema",
+    "type",
+    "types",
+    "typescript",
+    "validate",
+    "validation",
+    "validation-schema",
+    "validator"
   ],
   "author": "Andy Edwards",
   "license": "MIT",

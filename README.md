@@ -6,26 +6,7 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 [![npm version](https://badge.fury.io/js/%40jcoreio%2Ftypescript-validators.svg)](https://badge.fury.io/js/%40jcoreio%2Ftypescript-validators)
 
-This is my personal skeleton for creating an typescript library npm package. You are welcome to use it.
+Helps you write validators for TypeScript types, ensuring compile errors if your validator doesn't match the type.
+The validation errors are detailed. Adapted from the brilliant work in `flow-runtime`.
 
-## Quick start
-
-```sh
-npx 0-60 clone https://github.com/jcoreio/typescript-validators.git
-```
-
-## Tools used
-
-- babel 7
-- typescript
-- mocha
-- chai
-- istanbul
-- nyc
-- eslint
-- prettier
-- husky
-- semantic-release
-- renovate
-- Circle CI
-- Codecov.io
+WIP
