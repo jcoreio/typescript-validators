@@ -1,4 +1,4 @@
-function keyToString(key: string | number | symbol): string {
+export function keyToString(key: string | number | symbol): string {
   switch (typeof key) {
     case 'symbol':
       return `[${String(key)}]`

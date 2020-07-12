@@ -16,7 +16,7 @@ export default function makeTypeError<T>(
   const { prefix, input, errors } = validation
   const collected = []
   for (const [path, message, expectedType] of errors) {
-    const expected = expectedType ? expectedType.toString() : '*'
+    const expected = expectedType ? expectedType.toString() : 'any'
     const actual = resolvePath(input, path)
     const actualType = typeOf(actual)
 

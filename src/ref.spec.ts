@@ -58,7 +58,7 @@ describe(`t.ref`, function() {
     ).to.throw(
       t.RuntimeTypeError,
       dedent`
-        node.left.right should not contain the key: "bar"
+        node.left.right should not contain the key: bar
 
         Expected: {
           value: any;

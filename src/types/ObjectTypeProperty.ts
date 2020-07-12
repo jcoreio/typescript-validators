@@ -10,6 +10,7 @@ import {
 
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 import getErrorMessage from '../getErrorMessage'
+import { keyToString } from '../errorReporting/typeOf'
 
 export default class ObjectTypeProperty<
   K extends string | number | symbol,
@@ -20,6 +21,7 @@ export default class ObjectTypeProperty<
   readonly value: Type<V>
   readonly optional: boolean
   readonly constraints: TypeConstraint<V>[] = []
+  __objectType: Type<any> = null as any
 
   constructor(key: K, value: Type<V>, optional: boolean) {
     super()
@@ -50,7 +52,11 @@ export default class ObjectTypeProperty<
     // @flowIgnore
     const { optional, key, value } = this
     if (!optional && !this.existsOn(input)) {
-      yield [path, getErrorMessage('ERR_MISSING_PROPERTY'), input]
+      yield [
+        path,
+        getErrorMessage('ERR_MISSING_PROPERTY', keyToString(key)),
+        this.__objectType,
+      ]
       return
     }
     const target = input[key]

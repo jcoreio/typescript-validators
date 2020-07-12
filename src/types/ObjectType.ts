@@ -18,6 +18,7 @@ import {
   startToStringCycle,
   endToStringCycle,
 } from '../cyclic'
+import { keyToString } from '../errorReporting/typeOf'
 
 export default class ObjectType<T extends {}> extends Type<T> {
   typeName = 'ObjectType'
@@ -34,6 +35,7 @@ export default class ObjectType<T extends {}> extends Type<T> {
     this.properties = properties
     this.indexers = indexers
     this.exact = exact
+    properties.forEach(prop => (prop.__objectType = this))
   }
 
   *errors(
@@ -46,7 +48,7 @@ export default class ObjectType<T extends {}> extends Type<T> {
       return
     }
 
-    if (typeof input !== 'object') {
+    if (typeof input !== 'object' || Array.isArray(input)) {
       yield [path, getErrorMessage('ERR_EXPECT_OBJECT'), this]
       return
     }
@@ -75,7 +77,7 @@ export default class ObjectType<T extends {}> extends Type<T> {
     if (input === null) {
       return false
     }
-    if (typeof input !== 'object') {
+    if (typeof input !== 'object' || Array.isArray(input)) {
       return false
     }
     if (inValidationCycle(this, input)) {
@@ -226,7 +228,7 @@ function* collectErrorsExact(
   for (const key in input) {
     // eslint-disable-line guard-for-in
     if (!properties.some(property => property.key === key)) {
-      yield [path, getErrorMessage('ERR_UNKNOWN_KEY', key), type]
+      yield [path, getErrorMessage('ERR_UNKNOWN_KEY', keyToString(key)), type]
     }
   }
 }

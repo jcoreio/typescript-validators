@@ -26,10 +26,10 @@ const errorMessages = {
   ERR_EXPECT_THIS: 'must be exactly this',
   ERR_EXPECT_VOID: 'must be undefined',
   ERR_INVALID_DATE: 'must be a valid date',
-  ERR_MISSING_PROPERTY: 'does not exist on object',
+  ERR_MISSING_PROPERTY: 'must have property: $0',
   ERR_NO_INDEXER: 'is not one of the permitted indexer types',
   ERR_NO_UNION: 'must be one of: $0',
-  ERR_UNKNOWN_KEY: 'should not contain the key: "$0"',
+  ERR_UNKNOWN_KEY: 'should not contain the key: $0',
 }
 
 export type ErrorKey = keyof typeof errorMessages
