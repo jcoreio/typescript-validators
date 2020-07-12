@@ -10,7 +10,6 @@ import makeWarningMessage from '../errorReporting/makeWarningMessage'
  */
 export default class Type<T> {
   readonly __type: T = null as any
-  readonly __constraint: (value: T) => any = null as any
   typeName = 'Type'
 
   static __compareTypes: (a: Type<any>, b: Type<any>) => -1 | 0 | 1;
