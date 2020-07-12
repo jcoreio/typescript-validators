@@ -1,5 +1,6 @@
 import { describe, it } from 'mocha'
 import * as t from './'
+import { expect } from 'chai'
 
 type ServiceScalingParameters = {
   DesiredCount?: number | null | undefined
@@ -385,5 +386,10 @@ describe(`smoke test`, function() {
     }
 
     DeployConfigType.assert(config)
+    const { Redis, ...rest } = config
+
+    expect(() => DeployConfigType.assert(rest as any)).to.throw(
+      t.RuntimeTypeError
+    )
   })
 })

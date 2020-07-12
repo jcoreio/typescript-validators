@@ -20,6 +20,7 @@ import TupleType from './types/TupleType'
 import UnionType from './types/UnionType'
 import VoidType from './types/VoidType'
 import Validation from './Validation'
+import RuntimeTypeError from './errorReporting/RuntimeTypeError'
 
 export {
   Type,
@@ -44,6 +45,7 @@ export {
   UnionType,
   VoidType,
   Validation,
+  RuntimeTypeError,
 }
 
 export const any = (): Type<any> => new AnyType()
