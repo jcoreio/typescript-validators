@@ -7,7 +7,9 @@ import typeOf from './typeOf'
 
 const delimiter = '\n-------------------------------------------------\n\n'
 
-export default function makeTypeError<T>(validation: Validation<T>) {
+export default function makeTypeError<T>(
+  validation: Validation<T>
+): RuntimeTypeError | undefined {
   if (!validation.hasErrors()) {
     return
   }
@@ -42,7 +44,7 @@ export default function makeTypeError<T>(validation: Validation<T>) {
   }
 }
 
-function makeString(value: any) {
+function makeString(value: any): string | undefined {
   if (value === null) {
     return 'null'
   }

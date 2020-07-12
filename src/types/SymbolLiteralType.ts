@@ -5,7 +5,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class SymbolLiteralType<T extends symbol> extends Type<T> {
-  typeName: string = 'SymbolLiteralType'
+  typeName = 'SymbolLiteralType'
   value: T
 
   constructor(value: T) {
@@ -40,11 +40,11 @@ export default class SymbolLiteralType<T extends symbol> extends Type<T> {
     }
   }
 
-  toString() {
+  toString(): string {
     return `typeof ${String(this.value)}`
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       value: this.value,

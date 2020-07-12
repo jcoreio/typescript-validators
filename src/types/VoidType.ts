@@ -4,7 +4,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class VoidType extends Type<void> {
-  typeName: string = 'VoidType';
+  typeName = 'VoidType';
 
   *errors(
     validation: Validation<any>,
@@ -32,7 +32,7 @@ export default class VoidType extends Type<void> {
     return 'void'
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
     }

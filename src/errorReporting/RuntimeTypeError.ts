@@ -1,7 +1,7 @@
 import { ErrorTuple } from '../Validation'
 
 export default class RuntimeTypeError extends TypeError {
-  name: string = 'RuntimeTypeError'
+  name = 'RuntimeTypeError'
   errors: ErrorTuple[] | null | undefined
   constructor(
     message: string,

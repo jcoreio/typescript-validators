@@ -5,7 +5,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class NumberType extends Type<number> {
-  typeName: string = 'NumberType';
+  typeName = 'NumberType';
 
   *errors(
     validation: Validation<any>,
@@ -35,7 +35,7 @@ export default class NumberType extends Type<number> {
     return 'number'
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
     }

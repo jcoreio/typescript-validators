@@ -16,14 +16,14 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 export default class ObjectTypeProperty<
   K extends string | number | symbol,
   V
-> extends Type<Record<K, V>> {
-  typeName: string = 'ObjectTypeProperty'
+> extends Type<V> {
+  typeName = 'ObjectTypeProperty'
   key: K
   value: Type<V>
   optional: boolean
   // @flowIgnore
-  'static': boolean = false
-  constraints: TypeConstraint[] = []
+  'static' = false
+  constraints: TypeConstraint<V>[] = []
 
   constructor(key: K, value: Type<V>, optional: boolean) {
     super()
@@ -32,7 +32,7 @@ export default class ObjectTypeProperty<
     this.optional = optional
   }
 
-  addConstraint(...constraints: TypeConstraint[]): ObjectTypeProperty<K, V> {
+  addConstraint(...constraints: TypeConstraint<V>[]): ObjectTypeProperty<K, V> {
     addConstraints(this, ...constraints)
     return this
   }
@@ -47,7 +47,7 @@ export default class ObjectTypeProperty<
   /**
    * Determine whether the property exists on the given input or its prototype chain.
    */
-  existsOn(input: Object): boolean {
+  existsOn(input: Record<string, any>): boolean {
     // @flowIgnore
     const { key, static: isStatic } = this
     return key in (isStatic ? input.constructor : input) === true
@@ -158,7 +158,7 @@ export default class ObjectTypeProperty<
     }
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       key: this.key,

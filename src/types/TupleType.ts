@@ -4,7 +4,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class TupleType<T extends []> extends Type<T> {
-  typeName: string = 'TupleType'
+  typeName = 'TupleType'
   types: { [Index in keyof T]: Type<T[Index]> } & { length: T['length'] }
 
   constructor(
@@ -81,7 +81,7 @@ export default class TupleType<T extends []> extends Type<T> {
     return `[${this.types.join(', ')}]`
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       types: this.types,

@@ -5,7 +5,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class BooleanType extends Type<boolean> {
-  typeName: string = 'BooleanType';
+  typeName = 'BooleanType';
 
   *errors(
     validation: Validation<any>,
@@ -31,11 +31,11 @@ export default class BooleanType extends Type<boolean> {
     }
   }
 
-  toString() {
+  toString(): string {
     return 'boolean'
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
     }

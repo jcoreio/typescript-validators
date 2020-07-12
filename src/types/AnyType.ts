@@ -1,21 +1,18 @@
 import Type from './Type'
 
-import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
+import { ErrorTuple } from '../Validation'
 
 export default class AnyType extends Type<any> {
-  typeName: string = 'AnyType';
+  typeName = 'AnyType';
 
-  *errors(
-    validation: Validation<any>,
-    path: IdentifierPath,
-    input: any
-  ): Generator<ErrorTuple, void, void> {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  *errors(): Generator<ErrorTuple, void, void> {}
 
-  accepts(input: any): boolean {
+  accepts(): boolean {
     return true
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
+  compareWith(): -1 | 0 | 1 {
     return 1
   }
 
@@ -23,7 +20,7 @@ export default class AnyType extends Type<any> {
     return 'any'
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
     }

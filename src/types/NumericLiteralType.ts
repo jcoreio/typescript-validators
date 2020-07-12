@@ -4,7 +4,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class NumericLiteralType<T extends number> extends Type<T> {
-  typeName: string = 'NumericLiteralType'
+  typeName = 'NumericLiteralType'
   value: T
 
   constructor(value: T) {
@@ -39,7 +39,7 @@ export default class NumericLiteralType<T extends number> extends Type<T> {
     return `${this.value}`
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       value: this.value,

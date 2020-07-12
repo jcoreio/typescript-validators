@@ -1,7 +1,8 @@
-import makeError from '../makeError'
-
 import Validation from '../Validation'
 import { ErrorTuple, IdentifierPath } from '../Validation'
+import makeTypeError from '../errorReporting/makeTypeError'
+import makeWarningMessage from '../errorReporting/makeWarningMessage'
+import { TypeConstraint, ConstrainedType } from '.'
 
 /**
  * # Type
@@ -11,20 +12,29 @@ import { ErrorTuple, IdentifierPath } from '../Validation'
 export default class Type<T> {
   readonly __type: T = null as any
   readonly __constraint: (value: T) => any = null as any
-  typeName: string = 'Type'
+  typeName = 'Type'
 
-  constructor() {}
+  constrain(
+    name: string,
+    ...constraints: TypeConstraint<T>[]
+  ): ConstrainedType<T> {
+    return new ConstrainedType(name, this).addConstraint(...constraints)
+  }
 
   *errors(
+    /* eslint-disable @typescript-eslint/no-unused-vars */
     validation: Validation<any>,
     path: IdentifierPath,
     input: any
-  ): Generator<ErrorTuple, void, void> {}
+    /* eslint-enable @typescript-eslint/no-unused-vars */
+  ): Generator<ErrorTuple, void, void> {
+    // no-op
+  }
 
   accepts(input: any): boolean {
     const validation = new Validation(input)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     for (const error of this.errors(validation, [], input)) {
-      // eslint-disable-line no-unused-vars
       return false
     }
     return true
@@ -38,22 +48,42 @@ export default class Type<T> {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   compareWith(input: Type<any>): -1 | 0 | 1 {
     return -1
   }
 
-  assert<V extends T>(input: V): V {
-    const error = makeError(this, input)
+  assert<V extends T>(input: V, prefix = '', path?: string[]): V {
+    const validation = this.validate(input, prefix, path)
+    const error = makeTypeError(validation)
     if (error) {
-      if (typeof Error.captureStackTrace === 'function') {
-        Error.captureStackTrace(error, this.assert)
-      }
       throw error
     }
     return input
   }
 
-  toString() {
+  validate(input: any, prefix = '', path?: string[]): Validation<T> {
+    const validation = new Validation(input)
+    if (path) {
+      validation.path.push(...path)
+    } else if (typeof (this as any).name === 'string') {
+      validation.path.push((this as any).name)
+    }
+    validation.prefix = prefix
+    validation.errors = Array.from(this.errors(validation, [], input))
+    return validation
+  }
+
+  warn<V extends T>(input: V, prefix = '', path?: string[]): V {
+    const validation = this.validate(input, prefix, path)
+    const message = makeWarningMessage(validation)
+    if (typeof message === 'string') {
+      console.warn(message) // eslint-disable-line no-console
+    }
+    return input
+  }
+
+  toString(): string {
     return '$Type'
   }
 

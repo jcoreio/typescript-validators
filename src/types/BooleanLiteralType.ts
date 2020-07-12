@@ -4,7 +4,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class BooleanLiteralType<T extends boolean> extends Type<T> {
-  typeName: string = 'BooleanLiteralType'
+  typeName = 'BooleanLiteralType'
   value: T
 
   constructor(value: T) {
@@ -42,7 +42,7 @@ export default class BooleanLiteralType<T extends boolean> extends Type<T> {
     return this.value ? 'true' : 'false'
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       type: this.typeName,
       value: this.value,

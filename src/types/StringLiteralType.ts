@@ -3,7 +3,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class StringLiteralType<T extends string> extends Type<T> {
-  typeName: string = 'StringLiteralType'
+  typeName = 'StringLiteralType'
   value: T
 
   constructor(value: T) {
@@ -42,7 +42,7 @@ export default class StringLiteralType<T extends string> extends Type<T> {
     return JSON.stringify(this.value)
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       value: this.value,

@@ -4,7 +4,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class SymbolType extends Type<symbol> {
-  typeName: string = 'SymbolType';
+  typeName = 'SymbolType';
 
   *errors(
     validation: Validation<any>,
@@ -31,11 +31,11 @@ export default class SymbolType extends Type<symbol> {
     }
   }
 
-  toString() {
+  toString(): string {
     return 'Symbol'
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
     }

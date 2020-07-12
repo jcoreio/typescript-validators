@@ -2,7 +2,17 @@ import { stringifyPath, resolvePath } from '../Validation'
 import Validation from '../Validation'
 import typeOf from './typeOf'
 
-export default function makeJSONError<T>(validation: Validation<T>) {
+type JSONError = {
+  pointer: string
+  field: string
+  message: string
+  expected: string | null
+  actual: string
+}
+
+export default function makeJSONError<T>(
+  validation: Validation<T>
+): JSONError[] | undefined {
   if (!validation.hasErrors()) {
     return
   }

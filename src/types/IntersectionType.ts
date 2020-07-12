@@ -2,11 +2,10 @@ import Type from './Type'
 import compareTypes from '../compareTypes'
 
 import { Property } from './ObjectType'
-import ObjectTypeProperty from './ObjectTypeProperty'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class IntersectionType<T> extends Type<T> {
-  typeName: string = 'IntersectionType'
+  typeName = 'IntersectionType'
   types: Type<any>[]
 
   constructor(types: Type<any>[]) {
@@ -110,38 +109,10 @@ export default class IntersectionType<T> extends Type<T> {
     return this.types.join(' & ')
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       types: this.types,
     }
   }
-}
-
-function getPropertyIndex<K extends string | number | symbol, V>(
-  name: K,
-  properties: ObjectTypeProperty<any, V>[]
-): number {
-  for (let i = 0; i < properties.length; i++) {
-    if (properties[i].key === name) {
-      return i
-    }
-  }
-  return -1
-}
-
-function mergeProperties<K extends string | number | symbol, V>(
-  target: ObjectTypeProperty<K, V>[],
-  source: ObjectTypeProperty<K, V>[]
-): ObjectTypeProperty<K, V>[] {
-  for (let i = 0; i < source.length; i++) {
-    const typeProp = source[i]
-    const index = getPropertyIndex(typeProp.key, target)
-    if (index === -1) {
-      target.push(typeProp)
-    } else {
-      target[index] = typeProp
-    }
-  }
-  return target
 }

@@ -5,7 +5,7 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 import compareTypes from '../compareTypes'
 
 export default class UnionType<T> extends Type<T> {
-  typeName: string = 'UnionType'
+  typeName = 'UnionType'
   types: Type<any>[]
 
   constructor(types: Type<any>[]) {
@@ -94,7 +94,7 @@ export default class UnionType<T> extends Type<T> {
     return normalized.join(' | ')
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       types: this.types,

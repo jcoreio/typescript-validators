@@ -5,7 +5,7 @@ import VoidType from './VoidType'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class NullableType<T> extends Type<T | null | undefined> {
-  typeName: string = 'NullableType'
+  typeName = 'NullableType'
   type: Type<T>
 
   constructor(type: Type<T>) {
@@ -50,7 +50,7 @@ export default class NullableType<T> extends Type<T | null | undefined> {
     return `${this.type.toString()} | null | undefined`
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       type: this.type,

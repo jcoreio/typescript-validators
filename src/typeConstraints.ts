@@ -2,15 +2,17 @@ import { Type, TypeConstraint } from './types'
 
 import Validation, { ErrorTuple, IdentifierPath } from './Validation'
 
-export type ConstrainableType<T> = Type<T> & { constraints: TypeConstraint[] }
+export type ConstrainableType<T> = Type<T> & {
+  constraints: TypeConstraint<T>[]
+}
 
 /**
  * Add constraints to the given subject type.
  */
-export function addConstraints(
-  subject: ConstrainableType<any>,
-  ...constraints: TypeConstraint[]
-) {
+export function addConstraints<T>(
+  subject: ConstrainableType<T>,
+  ...constraints: TypeConstraint<T>[]
+): void {
   subject.constraints.push(...constraints)
 }
 
@@ -27,9 +29,9 @@ export function* collectConstraintErrors(
   const { length } = constraints
   for (let i = 0; i < length; i++) {
     const constraint = constraints[i]
-    const violation = constraint(...input)
+    const violation = (constraint as any)(...input)
     if (typeof violation === 'string') {
-      yield [path, violation, this]
+      yield [path, violation, subject]
     }
   }
 }
@@ -45,7 +47,7 @@ export function constraintsAccept(
   const { length } = constraints
   for (let i = 0; i < length; i++) {
     const constraint = constraints[i]
-    if (typeof constraint(...input) === 'string') {
+    if (typeof (constraint as any)(...input) === 'string') {
       return false
     }
   }

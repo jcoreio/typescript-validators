@@ -11,7 +11,7 @@ export default class Validation<T> {
 
   path: string[] = []
 
-  prefix: string = ''
+  prefix = ''
 
   errors: ErrorTuple[] = []
 
@@ -31,7 +31,7 @@ export default class Validation<T> {
     }
   }
 
-  startCycle(type: Type<any>, input: any) {
+  startCycle(type: Type<any>, input: any): void {
     let tracked = this.cyclic.get(type)
     if (!tracked) {
       tracked = new WeakSet()
@@ -40,7 +40,7 @@ export default class Validation<T> {
     weakSetAdd(tracked, input)
   }
 
-  endCycle(type: Type<any>, input: any) {
+  endCycle(type: Type<any>, input: any): void {
     const tracked = this.cyclic.get(type)
     if (tracked) {
       weakSetDelete(tracked, input)

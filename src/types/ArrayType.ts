@@ -15,7 +15,7 @@ import {
 } from '../cyclic'
 
 export default class ArrayType<T> extends Type<Array<T>> {
-  typeName: string = 'ArrayType'
+  typeName = 'ArrayType'
   elementType: Type<T>
 
   constructor(elementType: Type<T>) {
@@ -98,7 +98,7 @@ export default class ArrayType<T> extends Type<Array<T>> {
     return output
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       elementType: this.elementType,

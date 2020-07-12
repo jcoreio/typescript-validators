@@ -4,7 +4,7 @@ import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class NullLiteralType extends Type<null> {
-  typeName: string = 'NullLiteralType';
+  typeName = 'NullLiteralType';
 
   *errors(
     validation: Validation<any>,
@@ -32,7 +32,7 @@ export default class NullLiteralType extends Type<null> {
     return 'null'
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
     }

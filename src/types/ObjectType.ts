@@ -21,7 +21,7 @@ import {
 } from '../cyclic'
 
 export default class ObjectType<T extends {}> extends Type<T> {
-  typeName: string = 'ObjectType'
+  typeName = 'ObjectType'
   properties: ObjectTypeProperty<keyof T, any>[]
   indexers: ObjectTypeIndexer<any, any>[]
   exact: boolean
@@ -29,7 +29,7 @@ export default class ObjectType<T extends {}> extends Type<T> {
   constructor(
     properties: ObjectTypeProperty<keyof T, any>[] = [],
     indexers: ObjectTypeIndexer<any, any>[] = [],
-    exact: boolean = true
+    exact = true
   ) {
     super()
     this.properties = properties
@@ -56,8 +56,8 @@ export default class ObjectType<T extends {}> extends Type<T> {
   setProperty(
     key: string | number | symbol,
     value: Type<any>,
-    optional: boolean = false
-  ) {
+    optional = false
+  ): void {
     const { properties } = this
     const { length } = properties
     const newProp = new ObjectTypeProperty<any, any>(key, value, optional)
@@ -182,28 +182,18 @@ export default class ObjectType<T extends {}> extends Type<T> {
     if (!(input instanceof ObjectType)) {
       return -1
     }
-    let isGreater = false
 
-    let result
     if (this.indexers.length > 0) {
-      result = compareTypeWithIndexers(this, input as any)
+      return compareTypeWithIndexers(this, input as any)
     } else {
-      result = compareTypeWithoutIndexers(this, input as any)
-    }
-
-    if (result === -1) {
-      return -1
-    } else if (isGreater) {
-      return 1
-    } else {
-      return result as any
+      return compareTypeWithoutIndexers(this, input as any)
     }
   }
 
   toString(): string {
     const { properties, indexers } = this
     if (inToStringCycle(this)) {
-      return '$Cycle<Object>'
+      return '$Cycle<Record<string, any>>'
     }
     startToStringCycle(this)
     const body = []
@@ -217,7 +207,7 @@ export default class ObjectType<T extends {}> extends Type<T> {
     return `{\n${indent(body.join('\n'))}\n}`
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       properties: this.properties,
@@ -227,7 +217,10 @@ export default class ObjectType<T extends {}> extends Type<T> {
   }
 }
 
-function acceptsWithIndexers(type: ObjectType<any>, input: Object): boolean {
+function acceptsWithIndexers(
+  type: ObjectType<any>,
+  input: Record<string, any>
+): boolean {
   const { properties, indexers } = type
   const seen = []
   for (let i = 0; i < properties.length; i++) {
@@ -296,7 +289,10 @@ function compareTypeWithIndexers(
   return isGreater ? 1 : 0
 }
 
-function acceptsWithoutIndexers(type: ObjectType<any>, input: Object): boolean {
+function acceptsWithoutIndexers(
+  type: ObjectType<any>,
+  input: Record<string, any>
+): boolean {
   const { properties } = type
   for (let i = 0; i < properties.length; i++) {
     const property = properties[i]
@@ -307,7 +303,10 @@ function acceptsWithoutIndexers(type: ObjectType<any>, input: Object): boolean {
   return true
 }
 
-function acceptsExact(type: ObjectType<any>, input: Object): boolean {
+function acceptsExact(
+  type: ObjectType<any>,
+  input: Record<string, any>
+): boolean {
   const { properties } = type
   for (const key in input) {
     // eslint-disable-line guard-for-in
@@ -348,7 +347,7 @@ function* collectErrorsWithIndexers(
   type: ObjectType<any>,
   validation: Validation<any>,
   path: IdentifierPath,
-  input: Object
+  input: Record<string, any>
 ): Generator<ErrorTuple, void, void> {
   const { properties, indexers } = type
   const seen = []
@@ -378,7 +377,7 @@ function* collectErrorsWithoutIndexers(
   type: ObjectType<any>,
   validation: Validation<any>,
   path: IdentifierPath,
-  input: Object
+  input: Record<string, any>
 ): Generator<ErrorTuple, void, void> {
   const { properties } = type
   for (let i = 0; i < properties.length; i++) {
@@ -391,7 +390,7 @@ function* collectErrorsExact(
   type: ObjectType<any>,
   validation: Validation<any>,
   path: IdentifierPath,
-  input: Object
+  input: Record<string, any>
 ): Generator<ErrorTuple, void, void> {
   const { properties } = type
   for (const key in input) {

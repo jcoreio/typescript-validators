@@ -7,8 +7,8 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 export default class ObjectTypeIndexer<
   K extends string | number | symbol,
   V
-> extends Type<Record<K, V>> {
-  typeName: string = 'ObjectTypeIndexer'
+> extends Type<V> {
+  typeName = 'ObjectTypeIndexer'
   id: string
   key: Type<K>
   value: Type<V>
@@ -91,7 +91,7 @@ export default class ObjectTypeIndexer<
     return `[${this.id}: ${this.key.toString()}]: ${this.value.toString()};`
   }
 
-  toJSON() {
+  toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
       id: this.id,
