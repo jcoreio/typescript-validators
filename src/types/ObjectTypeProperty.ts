@@ -1,9 +1,7 @@
 /* @flow */
 
 import Type from './Type'
-import NullableType from './NullableType'
 import compareTypes from '../compareTypes'
-import getErrorMessage from '../getErrorMessage'
 import {
   addConstraints,
   collectConstraintErrors,
@@ -12,6 +10,7 @@ import {
 
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 import { TypeConstraint } from './ConstrainedType'
+import getErrorMessage from '../getErrorMessage'
 
 export default class ObjectTypeProperty<
   K extends string | number | symbol,
@@ -21,8 +20,6 @@ export default class ObjectTypeProperty<
   key: K
   value: Type<V>
   optional: boolean
-  // @flowIgnore
-  'static' = false
   constraints: TypeConstraint<V>[] = []
 
   constructor(key: K, value: Type<V>, optional: boolean) {
@@ -38,19 +35,12 @@ export default class ObjectTypeProperty<
   }
 
   /**
-   * Determine whether the property is nullable.
-   */
-  isNullable(): boolean {
-    return this.value instanceof NullableType
-  }
-
-  /**
    * Determine whether the property exists on the given input or its prototype chain.
    */
   existsOn(input: Record<string, any>): boolean {
     // @flowIgnore
-    const { key, static: isStatic } = this
-    return key in (isStatic ? input.constructor : input) === true
+    const { key } = this
+    return key in input === true
   }
 
   *errors(
@@ -59,35 +49,14 @@ export default class ObjectTypeProperty<
     input: any
   ): Generator<ErrorTuple, void, void> {
     // @flowIgnore
-    const { optional, key, value, static: isStatic } = this
-    let target
-    let targetPath
-    if (isStatic) {
-      if (
-        input === null ||
-        (typeof input !== 'object' && typeof input !== 'function')
-      ) {
-        yield [path, getErrorMessage('ERR_EXPECT_OBJECT'), this]
-        return
-      }
-      targetPath = path.concat('constructor')
-      if (typeof input.constructor !== 'function') {
-        if (!optional) {
-          yield [targetPath, getErrorMessage('ERR_EXPECT_FUNCTION'), this]
-        }
-        return
-      }
-      targetPath.push(key)
-      target = input.constructor[key]
-    } else {
-      target = input[key]
-      targetPath = path.concat(key)
-    }
-    if (optional && target === undefined) {
+    const { optional, key, value } = this
+    if (!optional && !this.existsOn(input)) {
+      yield [path, getErrorMessage('ERR_MISSING_PROPERTY'), input]
       return
     }
-    if (this.isNullable() && !this.existsOn(input)) {
-      yield [targetPath, getErrorMessage('ERR_MISSING_PROPERTY'), this]
+    const target = input[key]
+    const targetPath = path.concat(key)
+    if (optional && target === undefined) {
       return
     }
     let hasErrors = false
@@ -102,29 +71,14 @@ export default class ObjectTypeProperty<
 
   accepts(input: Record<K, V>): boolean {
     // @flowIgnore
-    const { optional, key, value, static: isStatic } = this
-    let target
-    if (isStatic) {
-      if (
-        input === null ||
-        (typeof input !== 'object' && typeof input !== 'function')
-      ) {
-        return false
-      }
-      if (typeof input.constructor !== 'function') {
-        return optional ? true : false
-      }
-      target = (input as any).constructor[key]
-    } else {
-      target = input[key]
+    const { optional, key, value } = this
+    if (!optional && !this.existsOn(input)) {
+      return false
     }
+    const target = input[key]
 
     if (optional && target === undefined) {
       return true
-    }
-
-    if (this.isNullable() && !this.existsOn(input)) {
-      return false
     }
 
     if (!value.accepts(target)) {
@@ -149,13 +103,7 @@ export default class ObjectTypeProperty<
     if (typeof key === 'symbol') {
       key = `[${key.toString()}]`
     }
-    if (this.static) {
-      return `static ${key}${
-        this.optional ? '?' : ''
-      }: ${this.value.toString()};`
-    } else {
-      return `${key}${this.optional ? '?' : ''}: ${this.value.toString()};`
-    }
+    return `${key}${this.optional ? '?' : ''}: ${this.value.toString()};`
   }
 
   toJSON(): Record<string, any> {

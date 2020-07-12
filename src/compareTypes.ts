@@ -30,3 +30,6 @@ export default function compareTypes(a: Type<any>, b: Type<any>): -1 | 0 | 1 {
     return result
   }
 }
+
+// this is done to avoid circular import problems
+Type.__compareTypes = compareTypes

@@ -11,13 +11,11 @@ import {
 
 export default class ConstrainedType<T> extends Type<T> {
   typeName = 'ConstrainedType'
-  name: string
   type: Type<T>
   constraints: TypeConstraint<T>[] = []
 
-  constructor(name: string, type: Type<T>) {
+  constructor(type: Type<T>) {
     super()
-    this.name = name
     this.type = type
   }
 
@@ -69,13 +67,12 @@ export default class ConstrainedType<T> extends Type<T> {
   }
 
   toString(): string {
-    return this.name
+    return `[constrained ${this.type}]`
   }
 
   toJSON(): Record<string, any> {
     return {
       typeName: this.typeName,
-      name: this.name,
       type: this.type,
     }
   }

@@ -7,9 +7,6 @@ export default function makeError(
   input: any
 ): TypeError | null | undefined {
   const validation = new Validation(input)
-  if (typeof (expected as any).name === 'string') {
-    validation.path.push((expected as any).name)
-  }
   validation.errors = Array.from(expected.errors(validation, [], input))
   return makeTypeError(validation)
 }

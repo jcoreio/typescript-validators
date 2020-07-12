@@ -1,7 +1,7 @@
 {
-  "name": "@jcoreio/typescript-validators",
+  "name": "typescript-validators",
   "version": "0.0.0-development",
-  "description": "API input validators with user-friendly error output and TypeScript to ensure you don't miss any properties",
+  "description": "complex type validators that generate TypeScript types for you",
   "main": "index.js",
   "sideEffects": false,
   "scripts": {

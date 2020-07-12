@@ -11,7 +11,9 @@ import makeWarningMessage from '../errorReporting/makeWarningMessage'
 export default class Type<T> {
   readonly __type: T = null as any
   readonly __constraint: (value: T) => any = null as any
-  typeName = 'Type';
+  typeName = 'Type'
+
+  static __compareTypes: (a: Type<any>, b: Type<any>) => -1 | 0 | 1;
 
   *errors(
     /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -33,7 +35,18 @@ export default class Type<T> {
   }
 
   acceptsType(input: Type<any>): boolean {
-    if (require('../compareTypes').default(this, input) === -1) {
+    if (!Type.__compareTypes) {
+      throw new Error(
+        `typescript-validators/compareTypes must be imported before doing this; probably you need to
+    
+    import { Type } from 'typescript-validators'
+
+instead of
+
+    import Type from 'typescript-validators/types/Type'`
+      )
+    }
+    if (Type.__compareTypes(this, input) === -1) {
       return false
     } else {
       return true
@@ -45,7 +58,7 @@ export default class Type<T> {
     return -1
   }
 
-  assert<V extends T>(input: V, prefix = '', path?: string[]): V {
+  assert<V extends T>(input: any, prefix = '', path?: IdentifierPath): V {
     const validation = this.validate(input, prefix, path)
     const error = makeTypeError(validation)
     if (error) {
@@ -54,19 +67,17 @@ export default class Type<T> {
     return input
   }
 
-  validate(input: any, prefix = '', path?: string[]): Validation<T> {
+  validate(input: any, prefix = '', path?: IdentifierPath): Validation<T> {
     const validation = new Validation(input)
     if (path) {
       validation.path.push(...path)
-    } else if (typeof (this as any).name === 'string') {
-      validation.path.push((this as any).name)
     }
     validation.prefix = prefix
     validation.errors = Array.from(this.errors(validation, [], input))
     return validation
   }
 
-  warn<V extends T>(input: V, prefix = '', path?: string[]): V {
+  warn(input: any, prefix = '', path?: IdentifierPath): void {
     const validation = this.validate(input, prefix, path)
     const message = makeWarningMessage(validation)
     if (typeof message === 'string') {
@@ -76,7 +87,7 @@ export default class Type<T> {
   }
 
   toString(): string {
-    return '$Type'
+    return 'Type'
   }
 
   toJSON(): any {

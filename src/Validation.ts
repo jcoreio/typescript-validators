@@ -9,7 +9,7 @@ export type ErrorTuple = [IdentifierPath, string, Type<any>]
 export default class Validation<T> {
   input: T
 
-  path: string[] = []
+  path: IdentifierPath = []
 
   prefix = ''
 
