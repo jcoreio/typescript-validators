@@ -21,6 +21,6 @@ export default class SymbolType extends Type<symbol> {
   }
 
   toString(): string {
-    return 'Symbol'
+    return 'symbol'
   }
 }
