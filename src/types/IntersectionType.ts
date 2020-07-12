@@ -102,19 +102,6 @@ export default class IntersectionType<T extends {}> extends Type<T> {
     }
   }
 
-  unwrap(): ObjectType<T> {
-    const properties: any = []
-    const indexers = []
-    const { types } = this
-    for (let i = 0; i < types.length; i++) {
-      const type = types[i].unwrap()
-      invariant(type instanceof ObjectType, 'Can only intersect object types')
-      indexers.push(...(type as ObjectType<any>).indexers)
-      mergeProperties(properties, (type as ObjectType<any>).properties)
-    }
-    return new ObjectType<T>(properties, indexers, true)
-  }
-
   toString(): string {
     return this.types.join(' & ')
   }

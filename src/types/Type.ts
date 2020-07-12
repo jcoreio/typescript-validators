@@ -9,6 +9,8 @@ import { ErrorTuple, IdentifierPath } from '../Validation'
  * This is the base class for all types.
  */
 export default class Type<T> {
+  readonly __type: T = null as any
+  readonly __constraint: (value: T) => any = null as any
   typeName: string = 'Type'
 
   constructor() {}
@@ -49,13 +51,6 @@ export default class Type<T> {
       throw error
     }
     return input
-  }
-
-  /**
-   * Get the inner type.
-   */
-  unwrap(): Type<T> {
-    return this
   }
 
   toString() {

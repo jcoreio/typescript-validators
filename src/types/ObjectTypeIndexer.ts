@@ -87,10 +87,6 @@ export default class ObjectTypeIndexer<
     }
   }
 
-  unwrap(): Type<V> {
-    return this.value.unwrap()
-  }
-
   toString(): string {
     return `[${this.id}: ${this.key.toString()}]: ${this.value.toString()};`
   }

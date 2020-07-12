@@ -4,7 +4,7 @@ import NullLiteralType from './NullLiteralType'
 import VoidType from './VoidType'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
-export default class NullableType<T> extends Type<T> {
+export default class NullableType<T> extends Type<T | null | undefined> {
   typeName: string = 'NullableType'
   type: Type<T>
 
@@ -44,13 +44,6 @@ export default class NullableType<T> extends Type<T> {
         return 1
       }
     }
-  }
-
-  /**
-   * Get the inner type or value.
-   */
-  unwrap(): Type<T> {
-    return this
   }
 
   toString(): string {

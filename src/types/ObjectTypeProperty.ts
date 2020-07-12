@@ -144,10 +144,6 @@ export default class ObjectTypeProperty<
     }
   }
 
-  unwrap(): Type<V> {
-    return this.value.unwrap()
-  }
-
   toString(): string {
     let key: any = this.key
     if (typeof key === 'symbol') {

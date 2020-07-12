@@ -51,7 +51,6 @@ export default class ObjectType<T extends {}> extends Type<T> {
         return property
       }
     }
-    return this.getIndexer(key)
   }
 
   setProperty(
@@ -85,7 +84,7 @@ export default class ObjectType<T extends {}> extends Type<T> {
         return true
       }
     }
-    return this.hasIndexer(key)
+    return false
   }
 
   /**

@@ -61,7 +61,7 @@ export const symbol = () => new SymbolType()
 export const symbolLiteral = (value: symbol) => new SymbolLiteralType(value)
 
 export function object<S extends {}>(
-  properties: { [K in keyof S]: Type<S[K]> }
+  properties: { [K in keyof S]-?: Type<S[K]> }
 ): Type<S> {
   return new ObjectType(
     Object.keys(properties).map(
@@ -87,7 +87,7 @@ type Tag = {
   PropagateAtLaunch?: boolean | null | undefined
 }
 
-const TagType = object({
+const TagType = object<Tag>({
   Key: string(),
   Value: string(),
   PropagateAtLaunch: nullable(boolean()),
@@ -95,4 +95,4 @@ const TagType = object({
 
 const TagsType = new ArrayType(TagType)
 
-TagsType.assert([{ Key: 'foo', Value: 'bar', Qux: 2, PropagateAtLaunch: true }])
+TagsType.assert([{ Key: 'foo', Value: 'bar', Qux: 2 }])
