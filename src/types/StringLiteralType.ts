@@ -30,22 +30,7 @@ export default class StringLiteralType<T extends string> extends Type<T> {
     return input === this.value
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input instanceof StringLiteralType && input.value === this.value) {
-      return 0
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     return JSON.stringify(this.value)
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-      value: this.value,
-    }
   }
 }

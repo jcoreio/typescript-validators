@@ -20,21 +20,7 @@ export default class NullLiteralType extends Type<null> {
     return input === null
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input instanceof NullLiteralType) {
-      return 0
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     return 'null'
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-    }
   }
 }

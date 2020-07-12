@@ -18,10 +18,8 @@ import SymbolLiteralType from './types/SymbolLiteralType'
 import SymbolType from './types/SymbolType'
 import TupleType from './types/TupleType'
 import UnionType from './types/UnionType'
-import VoidType from './types/VoidType'
 import Validation from './Validation'
 import RuntimeTypeError from './errorReporting/RuntimeTypeError'
-import './compareTypes'
 
 export {
   Type,
@@ -44,7 +42,6 @@ export {
   SymbolType,
   TupleType,
   UnionType,
-  VoidType,
   Validation,
   RuntimeTypeError,
 }

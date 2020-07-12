@@ -1,5 +1,4 @@
 import Type from './Type'
-import compareTypes from '../compareTypes'
 
 import { Property } from './ObjectType'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
@@ -71,48 +70,7 @@ export default class IntersectionType<T> extends Type<T> {
     return true
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    const types = this.types
-    let identicalCount = 0
-    if (input instanceof IntersectionType) {
-      const inputTypes = input.types
-      loop: for (let i = 0; i < types.length; i++) {
-        const type = types[i]
-        for (let j = 0; j < inputTypes.length; j++) {
-          const result = compareTypes(type, inputTypes[i])
-          if (result === 0) {
-            identicalCount++
-            continue loop
-          } else if (result === 1) {
-            continue loop
-          }
-        }
-        // if we got this far then nothing accepted this type.
-        return -1
-      }
-      return identicalCount === types.length ? 0 : 1
-    } else {
-      for (let i = 0; i < types.length; i++) {
-        const type = types[i]
-        const result = compareTypes(type, input)
-        if (result === -1) {
-          return -1
-        } else if (result === 0) {
-          identicalCount++
-        }
-      }
-      return identicalCount === types.length ? 0 : 1
-    }
-  }
-
   toString(): string {
     return this.types.join(' & ')
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-      types: this.types,
-    }
   }
 }

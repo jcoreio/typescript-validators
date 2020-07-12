@@ -1,7 +1,6 @@
 /* @flow */
 
 import Type from './Type'
-import compareTypes from '../compareTypes'
 import {
   addConstraints,
   collectConstraintErrors,
@@ -88,30 +87,11 @@ export default class ObjectTypeProperty<
     }
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (!(input instanceof ObjectTypeProperty)) {
-      return -1
-    } else if (input.key !== this.key) {
-      return -1
-    } else {
-      return compareTypes(this.value, input.value)
-    }
-  }
-
   toString(): string {
     let key: any = this.key
     if (typeof key === 'symbol') {
       key = `[${key.toString()}]`
     }
     return `${key}${this.optional ? '?' : ''}: ${this.value.toString()};`
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-      key: this.key,
-      value: this.value,
-      optional: this.optional,
-    }
   }
 }

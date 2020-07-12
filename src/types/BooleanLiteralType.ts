@@ -30,22 +30,7 @@ export default class BooleanLiteralType<T extends boolean> extends Type<T> {
     return input === this.value
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input instanceof BooleanLiteralType && input.value === this.value) {
-      return 0
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     return this.value ? 'true' : 'false'
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      type: this.typeName,
-      value: this.value,
-    }
   }
 }

@@ -1,5 +1,4 @@
 import Type from './Type'
-import compareTypes from '../compareTypes'
 
 import ObjectTypeProperty from './ObjectTypeProperty'
 import ObjectTypeIndexer from './ObjectTypeIndexer'
@@ -35,87 +34,6 @@ export default class ObjectType<T extends {}> extends Type<T> {
     this.properties = properties
     this.indexers = indexers
     this.exact = exact
-  }
-
-  /**
-   * Get a property with the given name, or undefined if it does not exist.
-   */
-  getProperty(
-    key: string | number | symbol
-  ): Property<keyof T, any> | null | undefined {
-    const { properties } = this
-    const { length } = properties
-    for (let i = 0; i < length; i++) {
-      const property = properties[i]
-      if (property.key === key) {
-        return property
-      }
-    }
-  }
-
-  setProperty(
-    key: string | number | symbol,
-    value: Type<any>,
-    optional = false
-  ): void {
-    const { properties } = this
-    const { length } = properties
-    const newProp = new ObjectTypeProperty<any, any>(key, value, optional)
-
-    for (let i = 0; i < length; i++) {
-      const property = properties[i]
-      if (property.key === key) {
-        properties[i] = newProp
-        return
-      }
-    }
-    properties.push(newProp)
-  }
-
-  /**
-   * Determine whether a property with the given name exists.
-   */
-  hasProperty(key: string): boolean {
-    const { properties } = this
-    const { length } = properties
-    for (let i = 0; i < length; i++) {
-      const property = properties[i]
-      if (property.key === key) {
-        return true
-      }
-    }
-    return false
-  }
-
-  /**
-   * Get an indexer with which matches the given key type.
-   */
-  getIndexer<K extends string | number | symbol>(
-    key: K
-  ): ObjectTypeIndexer<K, any> | null | undefined {
-    const { indexers } = this
-    const { length } = indexers
-    for (let i = 0; i < length; i++) {
-      const indexer = indexers[i]
-      if (indexer.acceptsKey(key)) {
-        return indexer
-      }
-    }
-  }
-
-  /**
-   * Determine whether an indexer exists which matches the given key type.
-   */
-  hasIndexer(key: string | number | symbol): boolean {
-    const { indexers } = this
-    const { length } = indexers
-    for (let i = 0; i < length; i++) {
-      const indexer = indexers[i]
-      if (indexer.acceptsKey(key)) {
-        return true
-      }
-    }
-    return false
   }
 
   *errors(
@@ -178,18 +96,6 @@ export default class ObjectType<T extends {}> extends Type<T> {
     return result
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (!(input instanceof ObjectType)) {
-      return -1
-    }
-
-    if (this.indexers.length > 0) {
-      return compareTypeWithIndexers(this, input as any)
-    } else {
-      return compareTypeWithoutIndexers(this, input as any)
-    }
-  }
-
   toString(): string {
     const { properties, indexers } = this
     if (inToStringCycle(this)) {
@@ -205,15 +111,6 @@ export default class ObjectType<T extends {}> extends Type<T> {
     }
     endToStringCycle(this)
     return `{\n${indent(body.join('\n'))}\n}`
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-      properties: this.properties,
-      indexers: this.indexers,
-      exact: this.exact,
-    }
   }
 }
 
@@ -248,47 +145,6 @@ function acceptsWithIndexers(
   return true
 }
 
-function compareTypeWithIndexers(
-  type: ObjectType<any>,
-  input: ObjectType<any>
-): -1 | 0 | 1 {
-  const { indexers, properties } = type
-  const inputIndexers = input.indexers
-  const inputProperties = input.properties
-  let isGreater = false
-  loop: for (let i = 0; i < properties.length; i++) {
-    const property = properties[i]
-    for (let j = 0; j < inputProperties.length; j++) {
-      const inputProperty = inputProperties[j]
-      if (inputProperty.key === property.key) {
-        const result = compareTypes(property, inputProperty)
-        if (result === -1) {
-          return -1
-        } else if (result === 1) {
-          isGreater = true
-        }
-        continue loop
-      }
-    }
-  }
-  loop: for (let i = 0; i < indexers.length; i++) {
-    const indexer = indexers[i]
-    for (let j = 0; j < inputIndexers.length; j++) {
-      const inputIndexer = inputIndexers[j]
-      const result = compareTypes(indexer, inputIndexer)
-      if (result === 1) {
-        isGreater = true
-        continue loop
-      } else if (result === 0) {
-        continue loop
-      }
-    }
-    // if we got this far, nothing accepted
-    return -1
-  }
-  return isGreater ? 1 : 0
-}
-
 function acceptsWithoutIndexers(
   type: ObjectType<any>,
   input: Record<string, any>
@@ -315,32 +171,6 @@ function acceptsExact(
     }
   }
   return true
-}
-
-function compareTypeWithoutIndexers(
-  type: ObjectType<any>,
-  input: ObjectType<any>
-): -1 | 0 | 1 {
-  const { properties } = type
-  const inputProperties = input.properties
-  let isGreater = false
-  loop: for (let i = 0; i < properties.length; i++) {
-    const property = properties[i]
-    for (let j = 0; j < inputProperties.length; j++) {
-      const inputProperty = inputProperties[j]
-      if (inputProperty.key === property.key) {
-        const result = compareTypes(property.value, inputProperty.value)
-        if (result === -1) {
-          return -1
-        } else if (result === 1) {
-          isGreater = true
-        }
-        continue loop
-      }
-    }
-    return -1
-  }
-  return isGreater ? 1 : 0
 }
 
 function* collectErrorsWithIndexers(

@@ -1,5 +1,4 @@
 import Type from './Type'
-import BooleanLiteralType from './BooleanLiteralType'
 
 import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
@@ -21,23 +20,7 @@ export default class BooleanType extends Type<boolean> {
     return typeof input === 'boolean'
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input instanceof BooleanLiteralType) {
-      return 1
-    } else if (input instanceof BooleanType) {
-      return 0
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     return 'boolean'
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-    }
   }
 }

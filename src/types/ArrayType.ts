@@ -1,6 +1,4 @@
 import Type from './Type'
-import TupleType from './TupleType'
-import compareTypes from '../compareTypes'
 
 import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
@@ -65,24 +63,6 @@ export default class ArrayType<T> extends Type<Array<T>> {
     return true
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    const { elementType } = this
-    if (input instanceof TupleType) {
-      const { types } = input as TupleType<any>
-      for (let i = 0; i < types.length; i++) {
-        const result = compareTypes(elementType, types[i])
-        if (result === -1) {
-          return -1
-        }
-      }
-      return 1
-    } else if (input instanceof ArrayType) {
-      return compareTypes(elementType, input.elementType)
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     const { elementType } = this
     if (inToStringCycle(this)) {
@@ -96,12 +76,5 @@ export default class ArrayType<T> extends Type<Array<T>> {
     const output = `Array<${elementType.toString()}>`
     endToStringCycle(this)
     return output
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-      elementType: this.elementType,
-    }
   }
 }

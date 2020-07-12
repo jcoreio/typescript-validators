@@ -27,22 +27,7 @@ export default class NumericLiteralType<T extends number> extends Type<T> {
     return input === this.value
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input instanceof NumericLiteralType && input.value === this.value) {
-      return 0
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     return `${this.value}`
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-      value: this.value,
-    }
   }
 }

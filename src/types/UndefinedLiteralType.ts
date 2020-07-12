@@ -20,21 +20,7 @@ export default class UndefinedLiteralType extends Type<undefined> {
     return input === undefined
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input instanceof UndefinedLiteralType) {
-      return 0
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     return 'undefined'
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-    }
   }
 }

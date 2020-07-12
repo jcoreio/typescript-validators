@@ -10,9 +10,7 @@ import makeWarningMessage from '../errorReporting/makeWarningMessage'
  */
 export default class Type<T> {
   readonly __type: T = null as any
-  typeName = 'Type'
-
-  static __compareTypes: (a: Type<any>, b: Type<any>) => -1 | 0 | 1;
+  typeName = 'Type';
 
   *errors(
     /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -31,30 +29,6 @@ export default class Type<T> {
       return false
     }
     return true
-  }
-
-  acceptsType(input: Type<any>): boolean {
-    if (!Type.__compareTypes) {
-      throw new Error(
-        `typescript-validators/compareTypes must be imported before doing this; probably you need to
-    
-    import { Type } from 'typescript-validators'
-
-instead of
-
-    import Type from 'typescript-validators/types/Type'`
-      )
-    }
-    if (Type.__compareTypes(this, input) === -1) {
-      return false
-    } else {
-      return true
-    }
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    return -1
   }
 
   assert<V extends T>(input: any, prefix = '', path?: IdentifierPath): V {
@@ -87,11 +61,5 @@ instead of
 
   toString(): string {
     return 'Type'
-  }
-
-  toJSON(): any {
-    return {
-      typeName: this.typeName,
-    }
   }
 }

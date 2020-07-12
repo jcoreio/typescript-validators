@@ -12,17 +12,7 @@ export default class AnyType extends Type<any> {
     return true
   }
 
-  compareWith(): -1 | 0 | 1 {
-    return 1
-  }
-
   toString(): string {
     return 'any'
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-    }
   }
 }

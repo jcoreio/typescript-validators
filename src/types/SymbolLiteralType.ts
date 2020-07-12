@@ -32,22 +32,7 @@ export default class SymbolLiteralType<T extends symbol> extends Type<T> {
     return input === this.value
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input instanceof SymbolLiteralType && input.value === this.value) {
-      return 0
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     return `typeof ${String(this.value)}`
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-      value: this.value,
-    }
   }
 }

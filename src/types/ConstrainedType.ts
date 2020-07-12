@@ -55,25 +55,7 @@ export default class ConstrainedType<T> extends Type<T> {
     }
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input === this) {
-      return 0 // should never need this because it's taken care of by compareTypes.
-    } else if (this.hasConstraints) {
-      // if we have constraints the types cannot be the same
-      return -1
-    } else {
-      return require('../compareTypes').default(this.type, input)
-    }
-  }
-
   toString(): string {
     return `[constrained ${this.type}]`
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-      type: this.type,
-    }
   }
 }

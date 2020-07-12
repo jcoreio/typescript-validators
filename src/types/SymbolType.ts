@@ -1,5 +1,4 @@
 import Type from './Type'
-import SymbolLiteralType from './SymbolLiteralType'
 import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
@@ -21,23 +20,7 @@ export default class SymbolType extends Type<symbol> {
     return typeof input === 'symbol'
   }
 
-  compareWith(input: Type<any>): -1 | 0 | 1 {
-    if (input instanceof SymbolLiteralType) {
-      return 1
-    } else if (input instanceof SymbolType) {
-      return 0
-    } else {
-      return -1
-    }
-  }
-
   toString(): string {
     return 'Symbol'
-  }
-
-  toJSON(): Record<string, any> {
-    return {
-      typeName: this.typeName,
-    }
   }
 }
