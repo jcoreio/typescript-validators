@@ -5,7 +5,7 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class BooleanLiteralType<T extends boolean> extends Type<T> {
   typeName = 'BooleanLiteralType'
-  value: T
+  readonly value: T
 
   constructor(value: T) {
     super()

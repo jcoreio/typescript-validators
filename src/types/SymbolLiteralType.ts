@@ -6,7 +6,7 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class SymbolLiteralType<T extends symbol> extends Type<T> {
   typeName = 'SymbolLiteralType'
-  value: T
+  readonly value: T
 
   constructor(value: T) {
     super()

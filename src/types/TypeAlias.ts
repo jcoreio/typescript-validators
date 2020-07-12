@@ -1,25 +1,25 @@
 import Type from './Type'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
-
-export type TypeConstraint<T> = (input: T) => string | null | undefined
-
 import {
   addConstraints,
   collectConstraintErrors,
   constraintsAccept,
+  TypeConstraint,
 } from '../typeConstraints'
 
-export default class ConstrainedType<T> extends Type<T> {
-  typeName = 'ConstrainedType'
-  type: Type<T>
-  constraints: TypeConstraint<T>[] = []
+export default class TypeAlias<T> extends Type<T> {
+  typeName = 'TypeAlias'
+  readonly name: string
+  readonly type: Type<T>
+  readonly constraints: TypeConstraint<T>[] = []
 
-  constructor(type: Type<T>) {
+  constructor(name: string, type: Type<T>) {
     super()
+    this.name = name
     this.type = type
   }
 
-  addConstraint(...constraints: TypeConstraint<T>[]): ConstrainedType<T> {
+  addConstraint(...constraints: TypeConstraint<T>[]): this {
     addConstraints(this, ...constraints)
     return this
   }
@@ -56,6 +56,6 @@ export default class ConstrainedType<T> extends Type<T> {
   }
 
   toString(): string {
-    return `[constrained ${this.type}]`
+    return this.name
   }
 }

@@ -1,5 +1,6 @@
 import * as t from './'
 import { expect } from 'chai'
+import dedent from 'dedent-js'
 
 describe(`t.number`, function() {
   it(`accepts numbers`, function() {
@@ -9,23 +10,25 @@ describe(`t.number`, function() {
   it(`rejects everything else`, function() {
     expect(() => t.number().assert(true)).to.throw(
       t.RuntimeTypeError,
-      `Value must be a number
+      dedent`
+        Value must be a number
 
-Expected: number
+        Expected: number
 
-Actual Value: true
+        Actual Value: true
 
-Actual Type: boolean`
+        Actual Type: boolean`
     )
     expect(() => t.number().assert('foo')).to.throw(
       t.RuntimeTypeError,
-      `Value must be a number
+      dedent`
+        Value must be a number
 
-Expected: number
+        Expected: number
 
-Actual Value: "foo"
+        Actual Value: "foo"
 
-Actual Type: string`
+        Actual Type: string`
     )
   })
 })
@@ -38,23 +41,25 @@ describe(`t.number(literal)`, function() {
   it(`rejects everything else`, function() {
     expect(() => t.number(2).assert(3)).to.throw(
       t.RuntimeTypeError,
-      `Value must be exactly 2
+      dedent`
+      Value must be exactly 2
 
-Expected: 2
+      Expected: 2
 
-Actual Value: 3
+      Actual Value: 3
 
-Actual Type: number`
+      Actual Type: number`
     )
     expect(() => t.number(2).assert('foo')).to.throw(
       t.RuntimeTypeError,
-      `Value must be exactly 2
+      dedent`
+        Value must be exactly 2
 
-Expected: 2
+        Expected: 2
 
-Actual Value: "foo"
+        Actual Value: "foo"
 
-Actual Type: string`
+        Actual Type: string`
     )
   })
 })

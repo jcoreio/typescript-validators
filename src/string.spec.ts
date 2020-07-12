@@ -1,5 +1,6 @@
 import * as t from './'
 import { expect } from 'chai'
+import dedent from 'dedent-js'
 
 describe(`t.string`, function() {
   it(`accepts strings`, function() {
@@ -9,23 +10,25 @@ describe(`t.string`, function() {
   it(`rejects everything else`, function() {
     expect(() => t.string().assert(true)).to.throw(
       t.RuntimeTypeError,
-      `Value must be a string
+      dedent`
+        Value must be a string
 
-Expected: string
+        Expected: string
 
-Actual Value: true
+        Actual Value: true
 
-Actual Type: boolean`
+        Actual Type: boolean`
     )
     expect(() => t.string().assert(2)).to.throw(
       t.RuntimeTypeError,
-      `Value must be a string
+      dedent`
+        Value must be a string
 
-Expected: string
+        Expected: string
 
-Actual Value: 2
+        Actual Value: 2
 
-Actual Type: number`
+        Actual Type: number`
     )
   })
 })
@@ -38,23 +41,25 @@ describe(`t.string(literal)`, function() {
   it(`rejects everything else`, function() {
     expect(() => t.string('foo').assert('bar')).to.throw(
       t.RuntimeTypeError,
-      `Value must be exactly "foo"
+      dedent`
+        Value must be exactly "foo"
 
-Expected: "foo"
+        Expected: "foo"
 
-Actual Value: "bar"
+        Actual Value: "bar"
 
-Actual Type: string`
+        Actual Type: string`
     )
     expect(() => t.string('foo').assert(3)).to.throw(
       t.RuntimeTypeError,
-      `Value must be exactly "foo"
+      dedent`
+        Value must be exactly "foo"
 
-Expected: "foo"
+        Expected: "foo"
 
-Actual Value: 3
+        Actual Value: 3
 
-Actual Type: number`
+        Actual Type: number`
     )
   })
 })

@@ -5,7 +5,7 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class IntersectionType<T> extends Type<T> {
   typeName = 'IntersectionType'
-  types: Type<any>[]
+  readonly types: Type<any>[]
 
   constructor(types: Type<any>[]) {
     super()

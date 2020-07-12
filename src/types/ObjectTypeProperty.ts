@@ -5,10 +5,10 @@ import {
   addConstraints,
   collectConstraintErrors,
   constraintsAccept,
+  TypeConstraint,
 } from '../typeConstraints'
 
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
-import { TypeConstraint } from './ConstrainedType'
 import getErrorMessage from '../getErrorMessage'
 
 export default class ObjectTypeProperty<
@@ -16,10 +16,10 @@ export default class ObjectTypeProperty<
   V
 > extends Type<V> {
   typeName = 'ObjectTypeProperty'
-  key: K
-  value: Type<V>
-  optional: boolean
-  constraints: TypeConstraint<V>[] = []
+  readonly key: K
+  readonly value: Type<V>
+  readonly optional: boolean
+  readonly constraints: TypeConstraint<V>[] = []
 
   constructor(key: K, value: Type<V>, optional: boolean) {
     super()

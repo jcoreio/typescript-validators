@@ -5,7 +5,7 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class NumericLiteralType<T extends number> extends Type<T> {
   typeName = 'NumericLiteralType'
-  value: T
+  readonly value: T
 
   constructor(value: T) {
     super()

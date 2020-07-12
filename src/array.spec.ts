@@ -1,5 +1,6 @@
 import * as t from './'
 import { expect } from 'chai'
+import dedent from 'dedent-js'
 
 describe(`t.array`, function() {
   it(`accepts matching arrays`, function() {
@@ -12,17 +13,18 @@ describe(`t.array`, function() {
     expect(t.array(t.number()).accepts({ foo: 'bar' })).to.be.false
     expect(() => t.array(t.number()).assert({ foo: 'bar' })).to.throw(
       t.RuntimeTypeError,
-      `Value must be an Array
+      dedent`
+        Value must be an Array
 
-Expected: Array<number>
+        Expected: Array<number>
 
-Actual Value: {
-  "foo": "bar"
-}
+        Actual Value: {
+          "foo": "bar"
+        }
 
-Actual Type: {
-  foo: string
-}`
+        Actual Type: {
+          foo: string
+        }`
     )
   })
   it(`rejects nonmatching array elements`, function() {
@@ -31,26 +33,28 @@ Actual Type: {
       t.array(t.number()).assert([1, 'bar'], '', ['array'])
     ).to.throw(
       t.RuntimeTypeError,
-      `array[1] must be a number
+      dedent`
+        array[1] must be a number
 
-Expected: number
+        Expected: number
 
-Actual Value: "bar"
+        Actual Value: "bar"
 
-Actual Type: string`
+        Actual Type: string`
     )
     expect(t.array(t.string()).accepts(['foo', 2])).to.be.false
     expect(() =>
       t.array(t.string()).assert(['foo', 2], '', ['array'])
     ).to.throw(
       t.RuntimeTypeError,
-      `array[1] must be a string
+      dedent`
+        array[1] must be a string
 
-Expected: string
+        Expected: string
 
-Actual Value: 2
+        Actual Value: 2
 
-Actual Type: number`
+        Actual Type: number`
     )
   })
 })

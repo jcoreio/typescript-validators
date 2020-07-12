@@ -26,9 +26,10 @@ The validation errors are detailed. Adapted from the brilliant work in `flow-run
     - [`t.symbol()`](#tsymbol)
     - [`t.symbol(MySymbol)`](#tsymbolmysymbol)
     - [`t.null()` / `t.nullLiteral()`](#tnull--tnullliteral)
+    - [`t.nullOr(t.string())`](#tnullortstring)
     - [`t.undefined()` / `t.undefinedLiteral()`](#tundefined--tundefinedliteral)
     - [`t.nullish()`](#tnullish)
-    - [`t.nullOr(t.string())`](#tnullortstring)
+    - [`t.nullishOr(t.string())`](#tnullishortstring)
     - [`t.array(t.number())`](#tarraytnumber)
     - [`t.simpleObject({ foo: t.string() })`](#tsimpleobject-foo-tstring-)
     - [`t.object`](#tobject)
@@ -36,13 +37,20 @@ The validation errors are detailed. Adapted from the brilliant work in `flow-run
     - [`t.tuple(t.string(), t.number())`](#ttupletstring-tnumber)
     - [`t.intersection(A, B)`](#tintersectiona-b)
     - [`t.union(t.string(), t.number())`](#tuniontstring-tnumber)
-    - [`t.constrain(type, ...constraints)`](#tconstraintype-constraints)
-  - [`t.Type`](#ttype)
+    - [`t.alias(name, type)`](#taliasname-type)
+    - [`t.ref(() => typeAlias)`](#tref--typealias)
+  - [`t.Type<T>`](#ttype)
     - [`accepts(input: any): boolean`](#acceptsinput-any-boolean)
-    - [`assert(input: any, prefix = '', path?: (string | number | symbol)[]): V`](#assertinput-any-prefix---path-string--number--symbol-v)
-    - [`validate(input: any, prefix = '', path?: (string | number | symbol)[]): Validation`](#validateinput-any-prefix---path-string--number--symbol-validation)
+    - [`assert<V extends T>(input: any, prefix = '', path?: (string | number | symbol)[]): V`](#assertinput-any-prefix---path-string--number--symbol-v)
+    - [`validate(input: any, prefix = '', path?: (string | number | symbol)[]): Validation<T>`](#validateinput-any-prefix---path-string--number--symbol-validation)
     - [`warn(input: any, prefix = '', path?: (string | number | symbol)[]): void`](#warninput-any-prefix---path-string--number--symbol-void)
     - [`toString(): string`](#tostring-string)
+  - [`t.ExtractType<T extends Type<any>>`](#textracttype)
+  - [`t.TypeAlias<T>`](#ttypealias)
+    - [`readonly name: string`](#readonly-name-string)
+    - [`addConstraint(...constraints: TypeConstraint<T>[]): this`](#addconstraintconstraints-typeconstraint-this)
+  - [Custom Constraints](#custom-constraints)
+  - [Recursive Types](#recursive-types)
 
 <!-- tocstop -->
 
@@ -99,7 +107,7 @@ const example: Post = PostValidator.assert({
 })
 ```
 
-Hover over `Post` in the IDE and you'll see, voilà:
+Hover over `Post` in VSCode and you'll see, voilà:
 
 ```ts
 type Post = {
@@ -199,6 +207,10 @@ A validator that requires the value to be `MySymbol`.
 
 A validator that requires the value to be `null`.
 
+### `t.nullOr(t.string())`
+
+A validator that requires the value to be `string | null`
+
 ### `t.undefined()` / `t.undefinedLiteral()`
 
 A validator that requires the value to be `undefined`.
@@ -207,9 +219,9 @@ A validator that requires the value to be `undefined`.
 
 A validator that requires the value to be `null | undefined`.
 
-### `t.nullOr(t.string())`
+### `t.nullishOr(t.string())`
 
-A validator that requires the value to be `string | null`
+A validator that requires the value to be `string | null | undefined`.
 
 ### `t.array(t.number())`
 
@@ -269,20 +281,18 @@ CommentedThingType.assert({ name: 'foo', comment: 'sweet' })
 
 A validator that requires the value to be `string | number`. Accepts a variable number of arguments, though type generation is only overloaded up to 8 arguments.
 
-### `t.constrain(type, ...constraints)`
+### `t.alias(name, type)`
 
-Applies custom constraints to a type. For example:
+Creates a `TypeAlias` with the given `name` and `type`.
 
-```ts
-const PositiveNumber = t.constrain(t.number(), (value: number):
-  | string
-  | null
-  | undefined => {
-  if (value < 0) return 'must be >= 0'
-})
+Type aliases serve two purposes:
 
-PositiveNumber.assert(-1) // throws an error including "must be >= 0"
-```
+- They allow you to [create recursive type validators with `t.ref()`](#recursive-types)
+- You can [add custom constraints to them](#custom-constraints)
+
+### `t.ref(() => typeAlias)`
+
+Creates a reference to the given `TypeAlias`. See [Recursive Types](#recursive-types) for examples.
 
 ## `t.Type<T>`
 
@@ -348,3 +358,95 @@ type Post = {
   tags: string[]
 }
 ```
+
+## `t.TypeAlias<T>`
+
+### `readonly name: string`
+
+The name of the alias.
+
+### `addConstraint(...constraints: TypeConstraint<T>[]): this`
+
+Adds custom constraints. `TypeConstraint<T>` is a function `(value: T) => string | null | undefined` which
+returns nullish if `value` is valid, or otherwise a `string` describing why `value` is invalid.
+
+## Custom Constraints
+
+It's nice to be able to validate that something is a `number`, but what if we want to make sure it's positive?
+We can do this by creating a type alias for `number` and adding a custom constraint to it:
+
+```ts
+const PositiveNumberType = t
+  .alias('PositiveNumber', t.number())
+  .addConstraint((value: number) => (value > 0 ? undefined : 'must be > 0'))
+
+PositiveNumberType.assert(-1)
+```
+
+The assertion will throw a `t.RuntimeTypeError` with the following message:
+
+```
+Value must be > 0
+
+Expected: PositiveNumber
+
+Actual Value: ${value}
+
+Actual Type: number
+```
+
+## Recursive Types
+
+Creating validators for recursive types takes a bit of extra effort. Naively, we would want to do this:
+
+```ts
+const NodeType = t.object<{
+  value: any
+  left?: any
+  right?: any
+}>()({
+  value: t.any(),
+  left: t.optional(NodeType),
+  right: t.optional(NodeType),
+})
+```
+
+But `t.optional(NodeType)` causes the error `Block-scoped variable 'NodeType' referenced before its declaration`.
+
+To work around, this we can create a `TypeAlias` and a reference to it:
+
+```ts
+const NodeType: t.TypeAlias<{
+  value: any
+  left?: Node
+  right?: Node
+}> = t.alias(
+  'Node',
+  t.object<{
+    value: any
+    left?: any
+    right?: any
+  }>()({
+    value: t.any(),
+    left: t.optional(t.ref(() => NodeType)),
+    right: t.optional(t.ref(() => NodeType)),
+  })
+)
+
+type Node = t.ExtractType<typeof NodeType>
+
+NodeType.assert({
+  value: 'foo',
+  left: {
+    value: 2,
+    right: {
+      value: 3,
+    },
+  },
+  right: {
+    value: 6,
+  },
+})
+```
+
+Notice how we use a thunk function in `t.ref(() => NodeType)` to avoid referencing `NodeType` before its declaration.

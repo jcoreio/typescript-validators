@@ -3,7 +3,6 @@ import AnyType from './types/AnyType'
 import ArrayType from './types/ArrayType'
 import BooleanLiteralType from './types/BooleanLiteralType'
 import BooleanType from './types/BooleanType'
-import ConstrainedType, { TypeConstraint } from './types/ConstrainedType'
 import IntersectionType from './types/IntersectionType'
 import NullLiteralType from './types/NullLiteralType'
 import UndefinedLiteralType from './types/UndefinedLiteralType'
@@ -18,6 +17,8 @@ import SymbolLiteralType from './types/SymbolLiteralType'
 import SymbolType from './types/SymbolType'
 import TupleType from './types/TupleType'
 import UnionType from './types/UnionType'
+import TypeAlias from './types/TypeAlias'
+import TypeReference from './types/TypeReference'
 import Validation from './Validation'
 import RuntimeTypeError from './errorReporting/RuntimeTypeError'
 
@@ -27,7 +28,6 @@ export {
   ArrayType,
   BooleanLiteralType,
   BooleanType,
-  ConstrainedType,
   IntersectionType,
   NullLiteralType,
   UndefinedLiteralType,
@@ -42,6 +42,8 @@ export {
   SymbolType,
   TupleType,
   UnionType,
+  TypeAlias,
+  TypeReference,
   Validation,
   RuntimeTypeError,
 }
@@ -61,6 +63,8 @@ export const undefinedLiteral = (): Type<undefined> =>
 export { undefinedLiteral as undefined }
 
 export const nullish = <T>(type: Type<T>): Type<T | null | undefined> =>
+  union(type, nullLiteral(), undefinedLiteral())
+export const nullishOr = <T>(type: Type<T>): Type<T | null | undefined> =>
   union(type, nullLiteral(), undefinedLiteral())
 
 export function boolean(): Type<boolean>
@@ -255,9 +259,10 @@ export function union(...types: Type<any>[]): Type<any> {
   return new UnionType(types)
 }
 
-export const constrain = <T>(
-  type: Type<T>,
-  ...constraints: TypeConstraint<T>[]
-): ConstrainedType<T> => new ConstrainedType(type).addConstraint(...constraints)
+export const alias = <T>(name: string, type: Type<T>): TypeAlias<T> =>
+  new TypeAlias(name, type)
+
+export const ref = <T>(type: () => TypeAlias<T>): Type<T> =>
+  new TypeReference(type)
 
 export type ExtractType<T extends Type<any>> = T['__type']

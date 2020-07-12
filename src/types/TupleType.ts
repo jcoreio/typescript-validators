@@ -4,7 +4,9 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class TupleType<T extends []> extends Type<T> {
   typeName = 'TupleType'
-  types: { [Index in keyof T]: Type<T[Index]> } & { length: T['length'] }
+  readonly types: { [Index in keyof T]: Type<T[Index]> } & {
+    length: T['length']
+  }
 
   constructor(
     types: { [Index in keyof T]: Type<T[Index]> } & { length: T['length'] }

@@ -4,7 +4,7 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class StringLiteralType<T extends string> extends Type<T> {
   typeName = 'StringLiteralType'
-  value: T
+  readonly value: T
 
   constructor(value: T) {
     super()

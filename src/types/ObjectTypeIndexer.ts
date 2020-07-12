@@ -7,9 +7,9 @@ export default class ObjectTypeIndexer<
   V
 > extends Type<V> {
   typeName = 'ObjectTypeIndexer'
-  id: string
-  key: Type<K>
-  value: Type<V>
+  readonly id: string
+  readonly key: Type<K>
+  readonly value: Type<V>
 
   constructor(id: string, key: Type<K>, value: Type<V>) {
     super()

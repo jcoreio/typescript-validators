@@ -14,7 +14,7 @@ import {
 
 export default class ArrayType<T> extends Type<Array<T>> {
   typeName = 'ArrayType'
-  elementType: Type<T>
+  readonly elementType: Type<T>
 
   constructor(elementType: Type<T>) {
     super()

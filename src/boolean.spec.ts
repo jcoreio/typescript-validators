@@ -1,5 +1,6 @@
 import * as t from './'
 import { expect } from 'chai'
+import dedent from 'dedent-js'
 
 describe(`t.boolean`, function() {
   it(`accepts booleans`, function() {
@@ -12,35 +13,38 @@ describe(`t.boolean`, function() {
     expect(t.boolean().accepts(2)).to.be.false
     expect(() => t.boolean().assert(2)).to.throw(
       t.RuntimeTypeError,
-      `Value must be true or false
+      dedent`
+        Value must be true or false
 
-Expected: boolean
+        Expected: boolean
 
-Actual Value: 2
+        Actual Value: 2
 
-Actual Type: number`
+        Actual Type: number`
     )
     expect(t.boolean().accepts('foo')).to.be.false
     expect(() => t.boolean().assert('foo')).to.throw(
       t.RuntimeTypeError,
-      `Value must be true or false
+      dedent`
+        Value must be true or false
 
-Expected: boolean
+        Expected: boolean
 
-Actual Value: "foo"
+        Actual Value: "foo"
 
-Actual Type: string`
+        Actual Type: string`
     )
     expect(t.boolean().accepts([])).to.be.false
     expect(() => t.boolean().assert([])).to.throw(
       t.RuntimeTypeError,
-      `Value must be true or false
+      dedent`
+        Value must be true or false
 
-Expected: boolean
+        Expected: boolean
 
-Actual Value: []
+        Actual Value: []
 
-Actual Type: Array`
+        Actual Type: Array`
     )
   })
 })
@@ -60,43 +64,47 @@ describe(`t.boolean(literal)`, function() {
     expect(t.boolean(false).accepts([])).to.be.false
     expect(() => t.boolean(true).assert(false)).to.throw(
       t.RuntimeTypeError,
-      `Value must be true
+      dedent`
+        Value must be true
 
-Expected: true
+        Expected: true
 
-Actual Value: false
+        Actual Value: false
 
-Actual Type: boolean`
+        Actual Type: boolean`
     )
     expect(() => t.boolean(false).assert(true)).to.throw(
       t.RuntimeTypeError,
-      `Value must be false
+      dedent`
+        Value must be false
 
-Expected: false
+        Expected: false
 
-Actual Value: true
+        Actual Value: true
 
-Actual Type: boolean`
+        Actual Type: boolean`
     )
     expect(() => t.boolean(true).assert(2)).to.throw(
       t.RuntimeTypeError,
-      `Value must be true
+      dedent`
+        Value must be true
 
-Expected: true
+        Expected: true
 
-Actual Value: 2
+        Actual Value: 2
 
-Actual Type: number`
+        Actual Type: number`
     )
     expect(() => t.boolean(false).assert('foo')).to.throw(
       t.RuntimeTypeError,
-      `Value must be false
+      dedent`
+        Value must be false
 
-Expected: false
+        Expected: false
 
-Actual Value: "foo"
+        Actual Value: "foo"
 
-Actual Type: string`
+        Actual Type: string`
     )
   })
 })

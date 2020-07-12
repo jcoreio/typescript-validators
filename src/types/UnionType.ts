@@ -4,7 +4,7 @@ import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
 export default class UnionType<T> extends Type<T> {
   typeName = 'UnionType'
-  types: Type<any>[]
+  readonly types: Type<any>[]
 
   constructor(types: Type<any>[]) {
     super()

@@ -21,9 +21,9 @@ import {
 
 export default class ObjectType<T extends {}> extends Type<T> {
   typeName = 'ObjectType'
-  properties: ObjectTypeProperty<keyof T, any>[]
-  indexers: ObjectTypeIndexer<any, any>[]
-  exact: boolean
+  readonly properties: ObjectTypeProperty<keyof T, any>[]
+  readonly indexers: ObjectTypeIndexer<any, any>[]
+  readonly exact: boolean
 
   constructor(
     properties: ObjectTypeProperty<keyof T, any>[] = [],
