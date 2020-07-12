@@ -413,7 +413,7 @@ const NodeType = t.object<{
 
 But `t.optional(NodeType)` causes the error `Block-scoped variable 'NodeType' referenced before its declaration`.
 
-To work around, this we can create a `TypeAlias` and a reference to it:
+To work around this, we can create a `TypeAlias` and a reference to it:
 
 ```ts
 const NodeType: t.TypeAlias<{
