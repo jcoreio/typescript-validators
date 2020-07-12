@@ -81,18 +81,90 @@ export const record = <K extends string | number | symbol, V>(
 ): Type<Record<K, V>> =>
   new ObjectType([], [new ObjectTypeIndexer('key', key, value)]) as any
 
-type Tag = {
-  Key: string
-  Value: string
-  PropagateAtLaunch?: boolean | null | undefined
+export const tuple = <T extends []>(
+  types: { [Index in keyof T]: Type<T[Index]> }
+): Type<T> => new TupleType(types) as any
+
+export function intersection<T1>(...types: [Type<T1>]): Type<T1>
+export function intersection<T1, T2>(
+  ...types: [Type<T1>, Type<T2>]
+): Type<T1 & T2>
+export function intersection<T1, T2, T3>(
+  ...types: [Type<T1>, Type<T2>, Type<T3>]
+): Type<T1 & T2 & T3>
+export function intersection<T1, T2, T3, T4>(
+  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>]
+): Type<T1 & T2 & T3 & T4>
+export function intersection<T1, T2, T3, T4, T5>(
+  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>]
+): Type<T1 & T2 & T3 & T4 & T5>
+export function intersection<T1, T2, T3, T4, T5, T6>(
+  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>, Type<T6>]
+): Type<T1 & T2 & T3 & T4 & T5 & T6>
+export function intersection<T1, T2, T3, T4, T5, T6, T7>(
+  ...types: [
+    Type<T1>,
+    Type<T2>,
+    Type<T3>,
+    Type<T4>,
+    Type<T5>,
+    Type<T6>,
+    Type<T7>
+  ]
+): Type<T1 & T2 & T3 & T4 & T5 & T6 & T7>
+export function intersection<T1, T2, T3, T4, T5, T6, T7, T8>(
+  ...types: [
+    Type<T1>,
+    Type<T2>,
+    Type<T3>,
+    Type<T4>,
+    Type<T5>,
+    Type<T6>,
+    Type<T7>,
+    Type<T8>
+  ]
+): Type<T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8>
+export function intersection(...types: Type<any>[]): Type<any> {
+  return new IntersectionType(types)
 }
 
-const TagType = object<Tag>({
-  Key: string(),
-  Value: string(),
-  PropagateAtLaunch: nullable(boolean()),
-})
-
-const TagsType = new ArrayType(TagType)
-
-TagsType.assert([{ Key: 'foo', Value: 'bar', Qux: 2 }])
+export function union<T1>(...types: [Type<T1>]): Type<T1>
+export function union<T1, T2>(...types: [Type<T1>, Type<T2>]): Type<T1 | T2>
+export function union<T1, T2, T3>(
+  ...types: [Type<T1>, Type<T2>, Type<T3>]
+): Type<T1 | T2 | T3>
+export function union<T1, T2, T3, T4>(
+  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>]
+): Type<T1 | T2 | T3 | T4>
+export function union<T1, T2, T3, T4, T5>(
+  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>]
+): Type<T1 | T2 | T3 | T4 | T5>
+export function union<T1, T2, T3, T4, T5, T6>(
+  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>, Type<T6>]
+): Type<T1 | T2 | T3 | T4 | T5 | T6>
+export function union<T1, T2, T3, T4, T5, T6, T7>(
+  ...types: [
+    Type<T1>,
+    Type<T2>,
+    Type<T3>,
+    Type<T4>,
+    Type<T5>,
+    Type<T6>,
+    Type<T7>
+  ]
+): Type<T1 | T2 | T3 | T4 | T5 | T6 | T7>
+export function union<T1, T2, T3, T4, T5, T6, T7, T8>(
+  ...types: [
+    Type<T1>,
+    Type<T2>,
+    Type<T3>,
+    Type<T4>,
+    Type<T5>,
+    Type<T6>,
+    Type<T7>,
+    Type<T8>
+  ]
+): Type<T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8>
+export function union(...types: Type<any>[]): Type<any> {
+  return new UnionType(types)
+}

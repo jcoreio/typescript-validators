@@ -1,14 +1,18 @@
 import Type from './Type'
 import compareTypes from '../compareTypes'
-import invariant from '../invariant'
 
-import ObjectType, { Property } from './ObjectType'
+import { Property } from './ObjectType'
 import ObjectTypeProperty from './ObjectTypeProperty'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
-export default class IntersectionType<T extends {}> extends Type<T> {
+export default class IntersectionType<T> extends Type<T> {
   typeName: string = 'IntersectionType'
-  types: Type<T>[] = [];
+  types: Type<any>[]
+
+  constructor(types: Type<any>[]) {
+    super()
+    this.types = types
+  }
 
   *errors(
     validation: Validation<any>,

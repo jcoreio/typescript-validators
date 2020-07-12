@@ -6,9 +6,9 @@ import compareTypes from '../compareTypes'
 
 export default class UnionType<T> extends Type<T> {
   typeName: string = 'UnionType'
-  types: Type<T>[]
+  types: Type<any>[]
 
-  constructor(types: Type<T>[]) {
+  constructor(types: Type<any>[]) {
     super()
     this.types = types
   }

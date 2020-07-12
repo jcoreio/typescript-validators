@@ -3,11 +3,13 @@ import compareTypes from '../compareTypes'
 import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
-export default class TupleType<T> extends Type<T[]> {
+export default class TupleType<T extends []> extends Type<T> {
   typeName: string = 'TupleType'
-  types: Type<T>[]
+  types: { [Index in keyof T]: Type<T[Index]> } & { length: T['length'] }
 
-  constructor(types: Type<T>[] = []) {
+  constructor(
+    types: { [Index in keyof T]: Type<T[Index]> } & { length: T['length'] }
+  ) {
     super()
     this.types = types
   }
@@ -24,7 +26,11 @@ export default class TupleType<T> extends Type<T[]> {
       return
     }
     for (let i = 0; i < length; i++) {
-      yield* types[i].errors(validation, path.concat(i), input[i])
+      yield* (types[i] as Type<any>).errors(
+        validation,
+        path.concat(i),
+        input[i]
+      )
     }
   }
 
@@ -36,7 +42,7 @@ export default class TupleType<T> extends Type<T[]> {
       return false
     }
     for (let i = 0; i < length; i++) {
-      const type = types[i]
+      const type = types[i] as Type<any>
       if (!type.accepts(input[i])) {
         return false
       }
