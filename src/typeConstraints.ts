@@ -1,6 +1,7 @@
-import { Type, TypeConstraint } from './types'
+import { Type } from './types'
 
 import Validation, { ErrorTuple, IdentifierPath } from './Validation'
+import { TypeConstraint } from './types/ConstrainedType'
 
 export type ConstrainableType<T> = Type<T> & {
   constraints: TypeConstraint<T>[]

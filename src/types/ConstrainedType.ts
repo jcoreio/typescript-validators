@@ -1,7 +1,7 @@
 import Type from './Type'
-import compareTypes from '../compareTypes'
-import { TypeConstraint } from './'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
+
+export type TypeConstraint<T> = (input: T) => string | null | undefined
 
 import {
   addConstraints,
@@ -64,7 +64,7 @@ export default class ConstrainedType<T> extends Type<T> {
       // if we have constraints the types cannot be the same
       return -1
     } else {
-      return compareTypes(this.type, input)
+      return require('../compareTypes').default(this.type, input)
     }
   }
 

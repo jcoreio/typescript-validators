@@ -2,7 +2,6 @@ import Validation from '../Validation'
 import { ErrorTuple, IdentifierPath } from '../Validation'
 import makeTypeError from '../errorReporting/makeTypeError'
 import makeWarningMessage from '../errorReporting/makeWarningMessage'
-import { TypeConstraint, ConstrainedType } from '.'
 
 /**
  * # Type
@@ -12,14 +11,7 @@ import { TypeConstraint, ConstrainedType } from '.'
 export default class Type<T> {
   readonly __type: T = null as any
   readonly __constraint: (value: T) => any = null as any
-  typeName = 'Type'
-
-  constrain(
-    name: string,
-    ...constraints: TypeConstraint<T>[]
-  ): ConstrainedType<T> {
-    return new ConstrainedType(name, this).addConstraint(...constraints)
-  }
+  typeName = 'Type';
 
   *errors(
     /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -41,7 +33,7 @@ export default class Type<T> {
   }
 
   acceptsType(input: Type<any>): boolean {
-    if (require('../compareTypes')(this, input) === -1) {
+    if (require('../compareTypes').default(this, input) === -1) {
       return false
     } else {
       return true

@@ -173,3 +173,6 @@ export function union<T1, T2, T3, T4, T5, T6, T7, T8>(
 export function union(...types: Type<any>[]): Type<any> {
   return new UnionType(types)
 }
+
+export const constrain = <T>(name: string, type: Type<T>): ConstrainedType<T> =>
+  new ConstrainedType(name, type)

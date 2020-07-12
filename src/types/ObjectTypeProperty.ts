@@ -10,8 +10,8 @@ import {
   constraintsAccept,
 } from '../typeConstraints'
 
-import { TypeConstraint } from '.'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
+import { TypeConstraint } from './ConstrainedType'
 
 export default class ObjectTypeProperty<
   K extends string | number | symbol,

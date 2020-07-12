@@ -13,8 +13,6 @@ export type ValidObjectBody<O extends {}> =
     >
   | ObjectTypeIndexer<any, any>
 
-export type TypeConstraint<T> = (input: T) => string | null | undefined
-
 import AnyType from './AnyType'
 import ArrayType from './ArrayType'
 import BooleanLiteralType from './BooleanLiteralType'
