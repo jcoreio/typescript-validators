@@ -395,7 +395,7 @@ Value must be > 0
 
 Expected: PositiveNumber
 
-Actual Value: ${value}
+Actual Value: -1
 
 Actual Type: number
 ```
