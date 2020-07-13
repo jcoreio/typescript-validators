@@ -34,7 +34,7 @@ The validation errors are detailed. Adapted from the brilliant work in `flow-run
     - [`t.simpleObject({ foo: t.string() })`](#tsimpleobject-foo-tstring-)
     - [`t.object`](#tobject)
     - [`t.record(t.string(), t.number())`](#trecordtstring-tnumber)
-    - [`t.instanceof(Date)`](#tinstanceofdate)
+    - [`t.instanceOf(Date)`](#tinstanceofdate)
     - [`t.tuple(t.string(), t.number())`](#ttupletstring-tnumber)
     - [`t.allOf(A, B)`](#tallofa-b)
     - [`t.oneOf(t.string(), t.number())`](#toneoftstring-tnumber)
