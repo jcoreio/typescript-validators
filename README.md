@@ -34,6 +34,7 @@ The validation errors are detailed. Adapted from the brilliant work in `flow-run
     - [`t.simpleObject({ foo: t.string() })`](#tsimpleobject-foo-tstring-)
     - [`t.object`](#tobject)
     - [`t.record(t.string(), t.number())`](#trecordtstring-tnumber)
+    - [`t.instanceof(Date)`](#tinstanceofdate)
     - [`t.tuple(t.string(), t.number())`](#ttupletstring-tnumber)
     - [`t.allOf(A, B)`](#tallofa-b)
     - [`t.oneOf(t.string(), t.number())`](#toneoftstring-tnumber)
@@ -258,6 +259,10 @@ You can also use the `t.optionalNullOr(t.string())` as a shorthand for
 ### `t.record(t.string(), t.number())`
 
 A validator that requires the value to be `Record<string, number>`.
+
+### `t.instanceOf(Date)`
+
+A validator that requires the value to be an instance of `Date`.
 
 ### `t.tuple(t.string(), t.number())`
 

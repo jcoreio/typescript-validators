@@ -3,6 +3,7 @@ import AnyType from './types/AnyType'
 import ArrayType from './types/ArrayType'
 import BooleanLiteralType from './types/BooleanLiteralType'
 import BooleanType from './types/BooleanType'
+import InstanceOfType from './types/InstanceOfType'
 import IntersectionType from './types/IntersectionType'
 import NullLiteralType from './types/NullLiteralType'
 import UndefinedLiteralType from './types/UndefinedLiteralType'
@@ -28,6 +29,7 @@ export {
   ArrayType,
   BooleanLiteralType,
   BooleanType,
+  InstanceOfType,
   IntersectionType,
   NullLiteralType,
   UndefinedLiteralType,
@@ -170,6 +172,10 @@ export const record = <K extends string | number | symbol, V>(
   key: Type<K>,
   value: Type<V>
 ): RecordType<K, V> => new RecordType(key, value)
+
+export const instanceOf = <T extends { new (...args: any[]): any }>(
+  classType: T
+): Type<T> => new InstanceOfType(classType)
 
 export const tuple = <T extends Type<any>[]>(
   ...types: T
