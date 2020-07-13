@@ -56,16 +56,16 @@ export const array = <T>(elementType: Type<T>): Type<T[]> =>
 export const nullLiteral = (): Type<null> => new NullLiteralType()
 export { nullLiteral as null }
 export const nullOr = <T>(type: Type<T>): Type<T | null> =>
-  union(type, nullLiteral())
+  oneOf(type, nullLiteral())
 
 export const undefinedLiteral = (): Type<undefined> =>
   new UndefinedLiteralType()
 export { undefinedLiteral as undefined }
 
 export const nullish = <T>(type: Type<T>): Type<T | null | undefined> =>
-  union(type, nullLiteral(), undefinedLiteral())
+  oneOf(type, nullLiteral(), undefinedLiteral())
 export const nullishOr = <T>(type: Type<T>): Type<T | null | undefined> =>
-  union(type, nullLiteral(), undefinedLiteral())
+  oneOf(type, nullLiteral(), undefinedLiteral())
 
 export function boolean(): Type<boolean>
 export function boolean<T extends true | false>(literal: T): Type<T>
@@ -109,7 +109,7 @@ const getOptional = <T>(value: unknown): Type<T> | null | undefined =>
   value instanceof Object ? (value as any).__optional__ : null
 
 export const optionalNullOr = <T>(type: Type<T>): OptionalProperty<T | null> =>
-  optional(union(type, nullLiteral()))
+  optional(oneOf(type, nullLiteral()))
 
 type OptionalKeys<T> = {
   [K in keyof T]: T extends Record<K, T[K]> ? never : K
@@ -171,27 +171,26 @@ export const record = <K extends string | number | symbol, V>(
   value: Type<V>
 ): RecordType<K, V> => new RecordType(key, value)
 
-export const tuple = <T extends []>(
-  ...types: { [Index in keyof T]: Type<T[Index]> }
-): Type<T> => new TupleType(types) as any
+export const tuple = <T extends Type<any>[]>(
+  ...types: T
+): Type<{ [Index in keyof T]: T[Index] extends Type<infer E> ? E : never }> =>
+  new TupleType(types) as any
 
-export function intersection<T1>(...types: [Type<T1>]): Type<T1>
-export function intersection<T1, T2>(
-  ...types: [Type<T1>, Type<T2>]
-): Type<T1 & T2>
-export function intersection<T1, T2, T3>(
+export function allOf<T1>(...types: [Type<T1>]): Type<T1>
+export function allOf<T1, T2>(...types: [Type<T1>, Type<T2>]): Type<T1 & T2>
+export function allOf<T1, T2, T3>(
   ...types: [Type<T1>, Type<T2>, Type<T3>]
 ): Type<T1 & T2 & T3>
-export function intersection<T1, T2, T3, T4>(
+export function allOf<T1, T2, T3, T4>(
   ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>]
 ): Type<T1 & T2 & T3 & T4>
-export function intersection<T1, T2, T3, T4, T5>(
+export function allOf<T1, T2, T3, T4, T5>(
   ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>]
 ): Type<T1 & T2 & T3 & T4 & T5>
-export function intersection<T1, T2, T3, T4, T5, T6>(
+export function allOf<T1, T2, T3, T4, T5, T6>(
   ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>, Type<T6>]
 ): Type<T1 & T2 & T3 & T4 & T5 & T6>
-export function intersection<T1, T2, T3, T4, T5, T6, T7>(
+export function allOf<T1, T2, T3, T4, T5, T6, T7>(
   ...types: [
     Type<T1>,
     Type<T2>,
@@ -202,7 +201,7 @@ export function intersection<T1, T2, T3, T4, T5, T6, T7>(
     Type<T7>
   ]
 ): Type<T1 & T2 & T3 & T4 & T5 & T6 & T7>
-export function intersection<T1, T2, T3, T4, T5, T6, T7, T8>(
+export function allOf<T1, T2, T3, T4, T5, T6, T7, T8>(
   ...types: [
     Type<T1>,
     Type<T2>,
@@ -214,25 +213,25 @@ export function intersection<T1, T2, T3, T4, T5, T6, T7, T8>(
     Type<T8>
   ]
 ): Type<T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8>
-export function intersection(...types: Type<any>[]): Type<any> {
+export function allOf(...types: Type<any>[]): Type<any> {
   return new IntersectionType(types)
 }
 
-export function union<T1>(...types: [Type<T1>]): Type<T1>
-export function union<T1, T2>(...types: [Type<T1>, Type<T2>]): Type<T1 | T2>
-export function union<T1, T2, T3>(
+export function oneOf<T1>(...types: [Type<T1>]): Type<T1>
+export function oneOf<T1, T2>(...types: [Type<T1>, Type<T2>]): Type<T1 | T2>
+export function oneOf<T1, T2, T3>(
   ...types: [Type<T1>, Type<T2>, Type<T3>]
 ): Type<T1 | T2 | T3>
-export function union<T1, T2, T3, T4>(
+export function oneOf<T1, T2, T3, T4>(
   ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>]
 ): Type<T1 | T2 | T3 | T4>
-export function union<T1, T2, T3, T4, T5>(
+export function oneOf<T1, T2, T3, T4, T5>(
   ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>]
 ): Type<T1 | T2 | T3 | T4 | T5>
-export function union<T1, T2, T3, T4, T5, T6>(
+export function oneOf<T1, T2, T3, T4, T5, T6>(
   ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>, Type<T6>]
 ): Type<T1 | T2 | T3 | T4 | T5 | T6>
-export function union<T1, T2, T3, T4, T5, T6, T7>(
+export function oneOf<T1, T2, T3, T4, T5, T6, T7>(
   ...types: [
     Type<T1>,
     Type<T2>,
@@ -243,7 +242,7 @@ export function union<T1, T2, T3, T4, T5, T6, T7>(
     Type<T7>
   ]
 ): Type<T1 | T2 | T3 | T4 | T5 | T6 | T7>
-export function union<T1, T2, T3, T4, T5, T6, T7, T8>(
+export function oneOf<T1, T2, T3, T4, T5, T6, T7, T8>(
   ...types: [
     Type<T1>,
     Type<T2>,
@@ -255,7 +254,7 @@ export function union<T1, T2, T3, T4, T5, T6, T7, T8>(
     Type<T8>
   ]
 ): Type<T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8>
-export function union(...types: Type<any>[]): Type<any> {
+export function oneOf(...types: Type<any>[]): Type<any> {
   return new UnionType(types)
 }
 

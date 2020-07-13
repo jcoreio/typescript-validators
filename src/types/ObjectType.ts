@@ -13,7 +13,7 @@ import {
   startToStringCycle,
   endToStringCycle,
 } from '../cyclic'
-import { keyToString } from '../errorReporting/typeOf'
+import { keyToString } from '../errorReporting/keyToString'
 
 export default class ObjectType<T extends {}> extends Type<T> {
   typeName = 'ObjectType'

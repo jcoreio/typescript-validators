@@ -35,8 +35,8 @@ The validation errors are detailed. Adapted from the brilliant work in `flow-run
     - [`t.object`](#tobject)
     - [`t.record(t.string(), t.number())`](#trecordtstring-tnumber)
     - [`t.tuple(t.string(), t.number())`](#ttupletstring-tnumber)
-    - [`t.intersection(A, B)`](#tintersectiona-b)
-    - [`t.union(t.string(), t.number())`](#tuniontstring-tnumber)
+    - [`t.allOf(A, B)`](#tallofa-b)
+    - [`t.oneOf(t.string(), t.number())`](#toneoftstring-tnumber)
     - [`t.alias(name, type)`](#taliasname-type)
     - [`t.ref(() => typeAlias)`](#tref--typealias)
   - [`t.Type<T>`](#ttype)
@@ -264,7 +264,7 @@ A validator that requires the value to be `Record<string, number>`.
 A validator that requires the value to be `[string, number]`.
 Accepts a variable number of arguments.
 
-### `t.intersection(A, B)`
+### `t.allOf(A, B)`
 
 A validator that requires the value to be `A & B`. Accepts a variable number of arguments, though type generation is only overloaded up to 8 arguments. For example:
 
@@ -272,12 +272,12 @@ A validator that requires the value to be `A & B`. Accepts a variable number of 
 const ThingType = t.simpleObject({ name: t.string() })
 const CommentedType = t.simpleObject({ comment: t.string() })
 
-const CommentedThingType = t.intersection(ThingType, CommentedType)
+const CommentedThingType = t.allOf(ThingType, CommentedType)
 
 CommentedThingType.assert({ name: 'foo', comment: 'sweet' })
 ```
 
-### `t.union(t.string(), t.number())`
+### `t.oneOf(t.string(), t.number())`
 
 A validator that requires the value to be `string | number`. Accepts a variable number of arguments, though type generation is only overloaded up to 8 arguments.
 

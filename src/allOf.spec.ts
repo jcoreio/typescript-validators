@@ -2,8 +2,8 @@ import * as t from './'
 import { expect } from 'chai'
 import dedent from 'dedent-js'
 
-describe(`t.intersection`, function() {
-  const ObjectIntersection = t.intersection(
+describe(`t.allOf`, function() {
+  const ObjectIntersection = t.allOf(
     t.simpleObject({ foo: t.number() }, { exact: false }),
     t.simpleObject({ bar: t.string() }, { exact: false })
   )

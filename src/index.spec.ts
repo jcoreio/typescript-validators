@@ -54,7 +54,7 @@ const DeployConfigType = t.object<{
    * The subnet ids for the Vpc.  Defaults to all available for VpcId
    */
 
-  Redis: t.union(
+  Redis: t.oneOf(
     t.object<{
       Type: any
       Host: any
@@ -73,7 +73,7 @@ const DeployConfigType = t.object<{
       AvailabilityZone: t.string(),
     })
   ),
-  DB: t.union(
+  DB: t.oneOf(
     t.object<{
       Type: any
       Host: any
@@ -235,7 +235,7 @@ const DeployConfigType = t.object<{
       LambdaFunctionName: t.optionalNullOr(t.string()),
     })
   ),
-  CloudFormationTemplateBucket: t.optionalNullOr(t.union(t.string(), t.null())),
+  CloudFormationTemplateBucket: t.optionalNullOr(t.oneOf(t.string(), t.null())),
   JCoreIOLink: t.optionalNullOr(t.string()),
   Superadmin: t.optionalNullOr(
     t.object<{

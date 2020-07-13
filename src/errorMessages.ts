@@ -25,6 +25,7 @@ const errorMessages = {
   ERR_EXPECT_SYMBOL: 'must be a symbol',
   ERR_EXPECT_THIS: 'must be exactly this',
   ERR_EXPECT_VOID: 'must be undefined',
+  ERR_EXPECT_LENGTH: 'must have length of $0',
   ERR_INVALID_DATE: 'must be a valid date',
   ERR_MISSING_PROPERTY: 'must have property: $0',
   ERR_NO_INDEXER: 'is not one of the permitted indexer types',

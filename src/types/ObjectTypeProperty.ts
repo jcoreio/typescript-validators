@@ -10,7 +10,7 @@ import {
 
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 import getErrorMessage from '../getErrorMessage'
-import { keyToString } from '../errorReporting/typeOf'
+import { keyToString } from '../errorReporting/keyToString'
 
 export default class ObjectTypeProperty<
   K extends string | number | symbol,

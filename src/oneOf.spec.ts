@@ -3,10 +3,10 @@ import { expect } from 'chai'
 import dedent from 'dedent-js'
 import typeOf from './errorReporting/typeOf'
 
-describe(`t.union`, function() {
-  const NumberOrString = t.union(t.number(), t.string())
+describe(`t.oneOf`, function() {
+  const NumberOrString = t.oneOf(t.number(), t.string())
 
-  const ObjectUnion = t.union(
+  const ObjectUnion = t.oneOf(
     t.simpleObject({ foo: t.number() }),
     t.simpleObject({ bar: t.string() })
   )
