@@ -249,8 +249,8 @@ type Thing = t.ExtractType<typeof ThingValidator>
 ```
 
 The type of `Thing` will be `{ name: string, comment?: string }`. Note that the property types in the explicit type parameter
-(`any`) are ignored. The type parameter just indicates which
-properties are required and which are optional.
+(`any`) are ignored. The type parameter just indicates which properties are required and which are optional, and also allows
+you to mark properties readonly. These attributes will be reflected in `t.ExtractType`.
 
 You can also use the `t.optionalNullOr(t.string())` as a shorthand for
 `t.optional(t.nullOr(t.string()))`.
