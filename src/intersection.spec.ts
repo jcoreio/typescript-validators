@@ -1,7 +1,6 @@
 import * as t from './'
 import { expect } from 'chai'
 import dedent from 'dedent-js'
-import typeOf from './errorReporting/typeOf'
 
 describe(`t.intersection`, function() {
   const ObjectIntersection = t.intersection(

@@ -11,7 +11,6 @@ import {
   startToStringCycle,
   endToStringCycle,
 } from '../cyclic'
-import { keyToString } from '../errorReporting/typeOf'
 
 export default class RecordType<
   K extends string | number | symbol,
