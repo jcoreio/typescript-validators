@@ -9,8 +9,8 @@ import UndefinedLiteralType from './types/UndefinedLiteralType'
 import NumberType from './types/NumberType'
 import NumericLiteralType from './types/NumericLiteralType'
 import ObjectType from './types/ObjectType'
-import ObjectTypeIndexer from './types/ObjectTypeIndexer'
 import ObjectTypeProperty from './types/ObjectTypeProperty'
+import RecordType from './types/RecordType'
 import StringLiteralType from './types/StringLiteralType'
 import StringType from './types/StringType'
 import SymbolLiteralType from './types/SymbolLiteralType'
@@ -34,8 +34,8 @@ export {
   NumberType,
   NumericLiteralType,
   ObjectType,
-  ObjectTypeIndexer,
   ObjectTypeProperty,
+  RecordType,
   StringLiteralType,
   StringType,
   SymbolLiteralType,
@@ -149,27 +149,27 @@ export const object = <S extends Record<string | number | symbol, unknown>>({
           Boolean(getOptional(type))
         )
     ),
-    [],
     exact
   ) as any
 
 type Properties = Record<string | number | symbol, Type<any>>
 
 export function simpleObject<Required extends Properties>(
-  required: Required
+  required: Required,
+  { exact }: { exact?: boolean } = {}
 ): ObjectType<{ [K in keyof Required]: Required[K]['__type'] }> {
   return new ObjectType(
     [...Object.entries(required || [])].map(
       ([key, type]) => new ObjectTypeProperty(key, type as Type<any>, false)
-    )
+    ),
+    exact
   ) as any
 }
 
 export const record = <K extends string | number | symbol, V>(
   key: Type<K>,
   value: Type<V>
-): ObjectType<Record<K, V>> =>
-  new ObjectType([], [new ObjectTypeIndexer('key', key, value)]) as any
+): RecordType<K, V> => new RecordType(key, value)
 
 export const tuple = <T extends []>(
   ...types: { [Index in keyof T]: Type<T[Index]> }

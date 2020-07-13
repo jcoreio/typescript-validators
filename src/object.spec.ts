@@ -48,7 +48,7 @@ describe(`t.object`, function() {
     )
   })
   it(`rejects everything else`, function() {
-    for (const value of [true, 'foo', undefined, 2, []]) {
+    for (const value of [true, 'foo', null, undefined, 2, []]) {
       expect(Person.accepts(value)).to.be.false
       expect(() => Person.assert(value)).to.throw(
         t.RuntimeTypeError,

@@ -98,6 +98,6 @@ export default class ObjectTypeProperty<
     if (typeof key === 'symbol') {
       key = `[${key.toString()}]`
     }
-    return `${key}${this.optional ? '?' : ''}: ${this.value.toString()};`
+    return `${key}${this.optional ? '?' : ''}: ${this.value.toString()}`
   }
 }

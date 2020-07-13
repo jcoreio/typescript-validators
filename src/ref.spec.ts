@@ -61,9 +61,9 @@ describe(`t.ref`, function() {
         node.left.right should not contain the key: bar
 
         Expected: {
-          value: any;
-          left?: Node;
-          right?: Node;
+          value: any
+          left?: Node
+          right?: Node
         }
         
         Actual Value: {
