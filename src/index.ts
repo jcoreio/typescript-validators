@@ -173,9 +173,9 @@ export const record = <K extends string | number | symbol, V>(
   value: Type<V>
 ): RecordType<K, V> => new RecordType(key, value)
 
-export const instanceOf = <T extends { new (...args: any[]): any }>(
-  classType: T
-): Type<T> => new InstanceOfType(classType)
+export const instanceOf = <T>(classType: {
+  new (...args: any[]): T
+}): Type<T> => new InstanceOfType(classType)
 
 export const tuple = <T extends Type<any>[]>(
   ...types: T

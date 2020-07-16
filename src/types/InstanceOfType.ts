@@ -3,13 +3,11 @@ import Type from './Type'
 import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'
 
-export default class InstanceOfType<
-  T extends { new (...args: any[]): any }
-> extends Type<T> {
+export default class InstanceOfType<T> extends Type<T> {
   typeName = 'InstanceOfType'
-  classType: T
+  classType: { new (...args: any[]): T }
 
-  constructor(classType: T) {
+  constructor(classType: { new (...args: any[]): T }) {
     super()
     this.classType = classType
   }
