@@ -22,6 +22,7 @@ import TypeAlias from './types/TypeAlias'
 import TypeReference from './types/TypeReference'
 import Validation from './Validation'
 import RuntimeTypeError from './errorReporting/RuntimeTypeError'
+import oneOf from './oneOf'
 
 export {
   Type,
@@ -48,6 +49,7 @@ export {
   TypeReference,
   Validation,
   RuntimeTypeError,
+  oneOf,
 }
 
 export const any = (): Type<any> => new AnyType()
@@ -221,47 +223,6 @@ export function allOf<T1, T2, T3, T4, T5, T6, T7, T8>(
 ): Type<T1 & T2 & T3 & T4 & T5 & T6 & T7 & T8>
 export function allOf(...types: Type<any>[]): Type<any> {
   return new IntersectionType(types)
-}
-
-export function oneOf<T1>(...types: [Type<T1>]): Type<T1>
-export function oneOf<T1, T2>(...types: [Type<T1>, Type<T2>]): Type<T1 | T2>
-export function oneOf<T1, T2, T3>(
-  ...types: [Type<T1>, Type<T2>, Type<T3>]
-): Type<T1 | T2 | T3>
-export function oneOf<T1, T2, T3, T4>(
-  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>]
-): Type<T1 | T2 | T3 | T4>
-export function oneOf<T1, T2, T3, T4, T5>(
-  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>]
-): Type<T1 | T2 | T3 | T4 | T5>
-export function oneOf<T1, T2, T3, T4, T5, T6>(
-  ...types: [Type<T1>, Type<T2>, Type<T3>, Type<T4>, Type<T5>, Type<T6>]
-): Type<T1 | T2 | T3 | T4 | T5 | T6>
-export function oneOf<T1, T2, T3, T4, T5, T6, T7>(
-  ...types: [
-    Type<T1>,
-    Type<T2>,
-    Type<T3>,
-    Type<T4>,
-    Type<T5>,
-    Type<T6>,
-    Type<T7>
-  ]
-): Type<T1 | T2 | T3 | T4 | T5 | T6 | T7>
-export function oneOf<T1, T2, T3, T4, T5, T6, T7, T8>(
-  ...types: [
-    Type<T1>,
-    Type<T2>,
-    Type<T3>,
-    Type<T4>,
-    Type<T5>,
-    Type<T6>,
-    Type<T7>,
-    Type<T8>
-  ]
-): Type<T1 | T2 | T3 | T4 | T5 | T6 | T7 | T8>
-export function oneOf(...types: Type<any>[]): Type<any> {
-  return new UnionType(types)
 }
 
 export const alias = <T>(name: string, type: Type<T>): TypeAlias<T> =>
