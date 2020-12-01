@@ -1,0 +1,17 @@
+// @flow
+
+import Type from './Type'
+
+import ObjectTypeProperty from './ObjectTypeProperty'
+
+declare class ObjectType<T: {}> extends Type<T> {
+  properties: ObjectTypeProperty<$Keys<T>, any>[];
+  exact: boolean;
+
+  constructor(
+    properties?: ObjectTypeProperty<$Keys<T>, any>[],
+    exact?: boolean
+  ): void;
+}
+
+export default ObjectType

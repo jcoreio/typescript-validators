@@ -1,0 +1,12 @@
+// @flow
+
+import Type from './Type'
+import TypeAlias from './TypeAlias'
+
+declare class TypeReference<T> extends Type<T> {
+  type: () => TypeAlias<T>;
+
+  constructor(type: () => TypeAlias<T>): void;
+}
+
+export default TypeReference

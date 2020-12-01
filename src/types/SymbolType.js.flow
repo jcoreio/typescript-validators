@@ -1,0 +1,7 @@
+// @flow
+
+import Type from './Type'
+
+declare class SymbolType extends Type<symbol> {}
+
+export default SymbolType

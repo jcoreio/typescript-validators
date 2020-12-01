@@ -1,0 +1,7 @@
+// @flow
+
+import Type from './Type'
+
+declare class UndefinedLiteralType extends Type<void> {}
+
+export default UndefinedLiteralType

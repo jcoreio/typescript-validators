@@ -1,0 +1,7 @@
+// @flow
+
+import Type from './Type'
+
+declare class NullLiteralType extends Type<null> {}
+
+export default NullLiteralType

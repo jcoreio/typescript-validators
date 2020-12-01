@@ -1,5 +1,3 @@
-/* @flow */
-
 import Type from './Type'
 import getErrorMessage from '../getErrorMessage'
 import Validation, { ErrorTuple, IdentifierPath } from '../Validation'

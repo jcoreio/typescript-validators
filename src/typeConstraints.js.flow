@@ -1,0 +1,10 @@
+// @flow
+
+import Type from './types/Type'
+import Validation, { type ErrorTuple, type IdentifierPath } from './Validation'
+
+export type TypeConstraint<T> = (input: T) => ?string
+
+export interface ConstrainableType<T> extends Type<T> {
+  constraints: TypeConstraint<T>[];
+}

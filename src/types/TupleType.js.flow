@@ -1,0 +1,11 @@
+// @flow
+
+import Type from './Type'
+
+declare class TupleType<T: any[]> extends Type<T> {
+  types: $TupleMap<T, <E>(E) => Type<E>>;
+
+  constructor(types: $TupleMap<T, <E>(E) => Type<E>>): void;
+}
+
+export default TupleType

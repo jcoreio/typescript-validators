@@ -1,5 +1,3 @@
-/* @flow */
-
 import Type from './Type'
 import {
   addConstraints,

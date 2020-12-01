@@ -1,0 +1,7 @@
+// @flow
+
+import Type from './Type'
+
+declare class StringType extends Type<string> {}
+
+export default StringType

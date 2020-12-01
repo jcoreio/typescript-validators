@@ -1,0 +1,18 @@
+// @flow
+
+import Type from './Type'
+import { type TypeConstraint } from '../typeConstraints'
+
+declare class TypeAlias<T> extends Type<T> {
+  name: string;
+  type: Type<T>;
+  constraints: TypeConstraint<T>[];
+
+  constructor(name: string, type: Type<T>): void;
+
+  addConstraint(...constraints: TypeConstraint<T>[]): this;
+
+  get hasConstraints(): boolean;
+}
+
+export default TypeAlias

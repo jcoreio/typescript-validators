@@ -1,0 +1,11 @@
+// @flow
+
+import Type from './Type'
+
+declare class InstanceOfType<T: Class<any>> extends Type<T> {
+  classType: T;
+
+  constructor(classType: T): void;
+}
+
+export default InstanceOfType

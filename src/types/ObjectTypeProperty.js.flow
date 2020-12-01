@@ -1,0 +1,27 @@
+// @flow
+
+import Type from './Type'
+
+import { type TypeConstraint } from '../typeConstraints'
+
+declare class ObjectTypeProperty<
+  K: string | number | symbol,
+  V
+> extends Type<V> {
+  key: K;
+  value: Type<V>;
+  optional: boolean;
+  constraints: TypeConstraint<V>[];
+  __objectType: Type<any>;
+
+  constructor(key: K, value: Type<V>, optional: boolean): void;
+
+  addConstraint(...constraints: TypeConstraint<V>[]): ObjectTypeProperty<K, V>;
+
+  /**
+   * Determine whether the property exists on the given input or its prototype chain.
+   */
+  existsOn(input: { [string]: any }): boolean;
+}
+
+export default ObjectTypeProperty

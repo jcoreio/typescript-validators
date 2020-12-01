@@ -1,0 +1,29 @@
+// @flow
+
+import type Validation from '../Validation'
+import type { ErrorTuple, IdentifierPath } from '../Validation'
+
+/**
+ * # Type
+ *
+ * This is the base class for all types.
+ */
+declare class Type<T> {
+  typeName: string;
+
+  errors(
+    validation: Validation<any>,
+    path: IdentifierPath,
+    input: any
+  ): Generator<ErrorTuple, void, void>;
+
+  accepts(input: any): boolean;
+
+  assert<V: T>(input: any, prefix?: string, path?: IdentifierPath): V;
+
+  validate(input: any, prefix?: string, path?: IdentifierPath): Validation<T>;
+
+  toString(): string;
+}
+
+export default Type

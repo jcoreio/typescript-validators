@@ -1,0 +1,11 @@
+// @flow
+
+import Type from './Type'
+
+declare class UnionType<T> extends Type<T> {
+  types: Type<any>[];
+
+  constructor(types: Type<any>[]): void;
+}
+
+export default UnionType

@@ -1,0 +1,11 @@
+// @flow
+
+import Type from './Type'
+
+declare class ArrayType<T> extends Type<Array<T>> {
+  elementType: Type<T>;
+
+  constructor(elementType: Type<T>): void;
+}
+
+export default ArrayType

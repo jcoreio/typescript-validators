@@ -1,0 +1,11 @@
+// @flow
+
+import Type from './Type'
+
+declare class BooleanLiteralType<T: boolean> extends Type<T> {
+  value: T;
+
+  constructor(value: T): void;
+}
+
+export default BooleanLiteralType

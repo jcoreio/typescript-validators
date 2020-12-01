@@ -1,0 +1,10 @@
+// @flow
+
+import Type from './Type'
+
+declare class NumericLiteralType<T: number> extends Type<T> {
+  value: T;
+
+  constructor(value: T): void;
+}
+export default NumericLiteralType

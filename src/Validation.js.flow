@@ -1,0 +1,29 @@
+// @flow
+
+import Type from './types/Type'
+
+export type IdentifierPath = Array<string | number | symbol>
+
+export type ErrorTuple = [IdentifierPath, string, Type<any>]
+
+declare class Validation<T> {
+  input: T;
+
+  path: IdentifierPath;
+
+  prefix: string;
+
+  errors: ErrorTuple[];
+
+  constructor(input: T, prefix?: string, path?: IdentifierPath): void;
+
+  inCycle(type: Type<any>, input: any): boolean;
+
+  startCycle(type: Type<any>, input: any): void;
+
+  endCycle(type: Type<any>, input: any): void;
+
+  hasErrors(): boolean;
+}
+
+export default Validation
