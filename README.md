@@ -9,6 +9,13 @@
 Complex type validators that generate TypeScript types for you.
 The validation errors are detailed. Adapted from the brilliant work in `flow-runtime`.
 
+# Deprecated
+
+I recreated this project as [`typed-validators`](https://github.com/jcoreio/typed-validators) and added Flow support!
+
+A few breaking changes to the API were necessary for Flow support, but they also made it easier to declare objects with
+optional properties.
+
 # Table of Contents
 
 <!-- toc -->
